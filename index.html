@@ -1,415 +1,1368 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GATE CS Complete Tracker</title>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <style>
-        /* Smooth transition style for dropdown expanding */
-        .accordion-content {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease-out;
-        }
-        .accordion-active .accordion-content {
-            max-height: 1000px;
-            transition: max-height 0.5s ease-in;
-        }
-        .rotate-icon {
-            transition: transform 0.3s ease;
-        }
-        .accordion-active .rotate-icon {
-            transform: rotate(180deg);
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GATE CS 2026 — Master Tracker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0b0f1a;
+    --surface: #111827;
+    --surface2: #1a2236;
+    --border: #1e2d45;
+    --accent: #3b82f6;
+    --accent2: #6366f1;
+    --emerald: #10b981;
+    --amber: #f59e0b;
+    --text: #e2e8f0;
+    --muted: #64748b;
+    --mono: 'JetBrains Mono', monospace;
+    --sans: 'Syne', sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    min-height: 100vh;
+    line-height: 1.6;
+  }
+
+  /* Subtle grid background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(59,130,246,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(59,130,246,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ── Header ── */
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(11,15,26,0.85);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .header-logo {
+    font-family: var(--mono);
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .header-badge {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    background: rgba(59,130,246,0.1);
+    border: 1px solid rgba(59,130,246,0.3);
+    color: #93c5fd;
+    padding: 4px 12px;
+    border-radius: 999px;
+  }
+
+  /* ── Layout ── */
+  main {
+    position: relative;
+    z-index: 1;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 32px 24px;
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 28px;
+    align-items: start;
+  }
+
+  @media (max-width: 1024px) {
+    main { grid-template-columns: 1fr; }
+  }
+
+  /* ── Cards ── */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px;
+  }
+
+  .card-title {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .card-title span { font-size: 0.9rem; }
+
+  /* ── Syllabus Checklist ── */
+  .syllabus-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+
+  .progress-pct {
+    font-family: var(--mono);
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  .progress-track {
+    width: 100%;
+    height: 4px;
+    background: var(--border);
+    border-radius: 99px;
+    margin-bottom: 24px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    border-radius: 99px;
+    transition: width 0.6s cubic-bezier(.4,0,.2,1);
+  }
+
+  /* ── Accordion ── */
+  .section-block {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 8px;
+    transition: border-color 0.2s;
+  }
+
+  .section-block:hover { border-color: rgba(59,130,246,0.3); }
+
+  .section-header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 18px;
+    background: var(--surface2);
+    cursor: pointer;
+    border: none;
+    color: inherit;
+    text-align: left;
+    transition: background 0.2s;
+  }
+
+  .section-header:hover { background: #1f2f48; }
+
+  .section-header-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section-num {
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    color: var(--accent);
+    background: rgba(59,130,246,0.1);
+    border: 1px solid rgba(59,130,246,0.2);
+    padding: 2px 7px;
+    border-radius: 4px;
+    letter-spacing: 0.05em;
+  }
+
+  .section-num.ga { color: var(--emerald); background: rgba(16,185,129,0.1); border-color: rgba(16,185,129,0.2); }
+
+  .section-title {
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: #c7d7f0;
+  }
+
+  .section-mini-prog {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    color: var(--muted);
+    margin-left: auto;
+    margin-right: 14px;
+    white-space: nowrap;
+  }
+
+  .chevron {
+    width: 14px;
+    height: 14px;
+    color: var(--muted);
+    transition: transform 0.3s ease;
+    flex-shrink: 0;
+  }
+
+  .section-block.open .chevron { transform: rotate(180deg); }
+
+  .section-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.35s ease;
+  }
+
+  .section-block.open .section-body { max-height: 2000px; }
+
+  .topics-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    padding: 16px 18px;
+    border-top: 1px solid var(--border);
+  }
+
+  @media (max-width: 600px) { .topics-grid { grid-template-columns: 1fr; } }
+
+  .topic-label {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    cursor: pointer;
+    padding: 8px 10px;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    transition: all 0.15s;
+    font-size: 0.72rem;
+    color: #94a3b8;
+    line-height: 1.4;
+  }
+
+  .topic-label:hover { background: var(--surface2); border-color: var(--border); color: var(--text); }
+
+  .topic-label input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 14px;
+    height: 14px;
+    min-width: 14px;
+    border: 1.5px solid var(--muted);
+    border-radius: 3px;
+    margin-top: 1px;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.15s;
+    background: transparent;
+  }
+
+  .topic-label input[type="checkbox"]:checked {
+    background: var(--accent);
+    border-color: var(--accent);
+  }
+
+  .topic-label input[type="checkbox"]:checked::after {
+    content: '';
+    position: absolute;
+    left: 3px;
+    top: 1px;
+    width: 5px;
+    height: 8px;
+    border: 1.5px solid white;
+    border-top: none;
+    border-left: none;
+    transform: rotate(45deg);
+  }
+
+  .topic-label.ga-label input[type="checkbox"]:checked {
+    background: var(--emerald);
+    border-color: var(--emerald);
+  }
+
+  .topic-label.done { color: #4b6070; }
+  .topic-label.done span { text-decoration: line-through; }
+
+  /* ── Right Column ── */
+  .right-col { display: flex; flex-direction: column; gap: 20px; }
+
+  /* ── Countdown ── */
+  .countdown-card {
+    background: linear-gradient(135deg, #0f1f3d 0%, #0b1628 50%, #0d1a2e 100%);
+    border: 1px solid rgba(59,130,246,0.25);
+    border-radius: 16px;
+    padding: 22px;
+    text-align: center;
+  }
+
+  .countdown-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #6688aa;
+    margin-bottom: 16px;
+    font-weight: 700;
+  }
+
+  .countdown-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+  }
+
+  .countdown-unit {
+    background: rgba(0,0,0,0.4);
+    border: 1px solid rgba(59,130,246,0.15);
+    border-radius: 10px;
+    padding: 12px 4px 8px;
+  }
+
+  .countdown-val {
+    font-family: var(--mono);
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1;
+  }
+
+  .countdown-val.secs { color: var(--emerald); }
+
+  .countdown-lbl {
+    font-family: var(--mono);
+    font-size: 0.55rem;
+    color: #4a6a8a;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-top: 4px;
+  }
+
+  .exam-date-note {
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    color: #4a6a8a;
+    margin-top: 12px;
+  }
+
+  /* ── Heatmap Calendar ── */
+  .heatmap-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+  }
+
+  .heatmap-month {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .nav-btn {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    width: 26px;
+    height: 26px;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    transition: all 0.15s;
+  }
+
+  .nav-btn:hover { background: var(--surface2); color: var(--text); }
+
+  .heatmap-days-header {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 3px;
+    margin-bottom: 3px;
+  }
+
+  .day-name {
+    text-align: center;
+    font-family: var(--mono);
+    font-size: 0.55rem;
+    color: var(--muted);
+    padding: 2px 0;
+  }
+
+  .heatmap-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 3px;
+  }
+
+  .cal-day {
+    aspect-ratio: 1;
+    border-radius: 4px;
+    cursor: pointer;
+    position: relative;
+    transition: transform 0.1s;
+    border: 1px solid transparent;
+  }
+
+  .cal-day:hover { transform: scale(1.15); z-index: 5; }
+
+  .cal-day.empty { background: transparent; cursor: default; }
+  .cal-day.empty:hover { transform: none; }
+
+  .cal-day.today { border-color: var(--accent) !important; }
+
+  .cal-day[data-hours="0"], .cal-day.no-study {
+    background: #161f2e;
+    border-color: #1e2d45;
+  }
+
+  /* Heat shades */
+  .heat-1 { background: rgba(16,185,129,0.2) !important; border-color: rgba(16,185,129,0.3) !important; }
+  .heat-2 { background: rgba(16,185,129,0.4) !important; border-color: rgba(16,185,129,0.5) !important; }
+  .heat-3 { background: rgba(16,185,129,0.6) !important; border-color: rgba(16,185,129,0.7) !important; }
+  .heat-4 { background: rgba(16,185,129,0.85) !important; border-color: rgba(16,185,129,0.9) !important; }
+  .heat-5 { background: rgba(16,185,129,1) !important; border-color: #10b981 !important; box-shadow: 0 0 8px rgba(16,185,129,0.4); }
+
+  .cal-day-num {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    color: rgba(255,255,255,0.4);
+    pointer-events: none;
+  }
+
+  /* Tooltip */
+  .cal-tooltip {
+    display: none;
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: #0a1929;
+    border: 1px solid var(--accent);
+    color: #fff;
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    padding: 5px 9px;
+    border-radius: 6px;
+    white-space: nowrap;
+    z-index: 10;
+    pointer-events: none;
+  }
+
+  .cal-day:hover .cal-tooltip { display: block; }
+
+  .heatmap-legend {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 10px;
+    justify-content: flex-end;
+  }
+
+  .legend-label { font-family: var(--mono); font-size: 0.55rem; color: var(--muted); }
+
+  .legend-box {
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+  }
+
+  /* ── Stats Row ── */
+  .stats-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .stat-box {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px;
+  }
+
+  .stat-box-label {
+    font-size: 0.6rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+
+  .stat-box-val {
+    font-family: var(--mono);
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1;
+  }
+
+  .stat-box-val.accent { color: var(--accent); }
+  .stat-box-val.emerald { color: var(--emerald); }
+  .stat-box-val.amber { color: var(--amber); }
+
+  .stat-box-sub {
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    color: var(--muted);
+    margin-top: 2px;
+  }
+
+  /* ── Streak Card ── */
+  .streak-flame { font-size: 1.5rem; }
+
+  .streak-bar-track {
+    width: 100%;
+    height: 3px;
+    background: var(--border);
+    border-radius: 99px;
+    margin-top: 8px;
+    overflow: hidden;
+  }
+
+  .streak-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--amber), #ff6b35);
+    border-radius: 99px;
+    transition: width 0.5s ease;
+  }
+
+  .streak-sub {
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  /* ── Log Form ── */
+  .form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+
+  .inp {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--text);
+    width: 100%;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+
+  .inp:focus { border-color: var(--accent); }
+  .inp::placeholder { color: var(--muted); }
+
+  .inp[type="date"]::-webkit-calendar-picker-indicator { filter: invert(0.5); }
+
+  .btn-log {
+    width: 100%;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 9px;
+    font-family: var(--sans);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    cursor: pointer;
+    transition: background 0.15s, transform 0.1s;
+  }
+
+  .btn-log:hover { background: #2563eb; }
+  .btn-log:active { transform: scale(0.98); }
+
+  /* ── Log Table ── */
+  .log-scroll { max-height: 160px; overflow-y: auto; margin-top: 12px; }
+
+  .log-scroll::-webkit-scrollbar { width: 4px; }
+  .log-scroll::-webkit-scrollbar-track { background: transparent; }
+  .log-scroll::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+  table { width: 100%; border-collapse: collapse; }
+
+  th {
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    padding: 0 0 8px;
+    text-align: left;
+    position: sticky;
+    top: 0;
+    background: var(--surface);
+  }
+
+  th:last-child { text-align: right; }
+
+  td {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    color: #94a3b8;
+    padding: 5px 0;
+    border-bottom: 1px solid rgba(30,45,69,0.5);
+  }
+
+  td:last-child { text-align: right; color: var(--text); font-weight: 700; }
+
+  .del-btn {
+    background: none;
+    border: none;
+    color: #334155;
+    cursor: pointer;
+    font-size: 0.65rem;
+    padding: 2px 4px;
+    transition: color 0.15s;
+  }
+
+  .del-btn:hover { color: #ef4444; }
+
+  /* ── Daily Goal ── */
+  .goal-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+
+  .goal-label { font-size: 0.65rem; color: var(--muted); white-space: nowrap; }
+
+  .goal-track {
+    flex: 1;
+    height: 4px;
+    background: var(--border);
+    border-radius: 99px;
+    overflow: hidden;
+  }
+
+  .goal-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--emerald));
+    border-radius: 99px;
+    transition: width 0.4s ease;
+  }
+
+  .goal-val {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+
+  /* ── Quick note ── */
+  .quote-card {
+    background: linear-gradient(135deg, rgba(99,102,241,0.08), rgba(59,130,246,0.04));
+    border: 1px solid rgba(99,102,241,0.2);
+    border-radius: 12px;
+    padding: 16px;
+    font-size: 0.7rem;
+    color: #7c9cc0;
+    font-style: italic;
+    line-height: 1.6;
+    text-align: center;
+  }
+
+  .quote-attr {
+    font-style: normal;
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    color: var(--muted);
+    margin-top: 6px;
+    display: block;
+  }
+
+  /* ── Animations ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .card { animation: fadeUp 0.4s ease both; }
+  .right-col > * { animation: fadeUp 0.4s ease both; }
+
+  /* Toast */
+  #toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: var(--emerald);
+    color: #fff;
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    padding: 10px 18px;
+    border-radius: 8px;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.3s;
+    z-index: 999;
+    pointer-events: none;
+  }
+
+  #toast.show { opacity: 1; transform: translateY(0); }
+
+</style>
 </head>
-<body class="bg-gray-900 text-gray-100 font-sans min-h-screen">
+<body>
 
-    <header class="border-b border-gray-800 bg-gray-900/50 backdrop-blur sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-            <h1 class="text-xl font-bold tracking-wider text-indigo-400">⚡ GATE CS MASTER TRACKER</h1>
-            <span class="text-xs bg-indigo-950 text-indigo-300 border border-indigo-800 px-3 py-1 rounded-full font-mono">Status: Interactive Preparation</span>
+<header>
+  <div class="header-logo">⚡ GATE CS 2026</div>
+  <div class="header-badge">Master Tracker</div>
+</header>
+
+<main>
+  <!-- ═══════════════════════════ LEFT COLUMN ═══════════════════════════ -->
+  <div style="display:flex;flex-direction:column;gap:20px;">
+    <div class="card">
+      <div class="syllabus-header">
+        <div class="card-title" style="margin:0;"><span>✅</span> Official Syllabus Checklist</div>
+        <div class="progress-pct" id="pct">0%</div>
+      </div>
+      <div class="progress-track"><div class="progress-fill" id="prog-fill" style="width:0%"></div></div>
+
+      <div id="checklist-container"></div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════ RIGHT COLUMN ══════════════════════════ -->
+  <div class="right-col">
+
+    <!-- Countdown -->
+    <div class="countdown-card">
+      <div class="countdown-label">Countdown to GATE 2026</div>
+      <div class="countdown-grid">
+        <div class="countdown-unit"><div class="countdown-val" id="cd-days">--</div><div class="countdown-lbl">Days</div></div>
+        <div class="countdown-unit"><div class="countdown-val" id="cd-hours">--</div><div class="countdown-lbl">Hours</div></div>
+        <div class="countdown-unit"><div class="countdown-val" id="cd-mins">--</div><div class="countdown-lbl">Mins</div></div>
+        <div class="countdown-unit"><div class="countdown-val secs" id="cd-secs">--</div><div class="countdown-lbl">Secs</div></div>
+      </div>
+      <div class="exam-date-note">Target: 1 Feb 2026 · 09:30 IST</div>
+    </div>
+
+    <!-- Stats Row -->
+    <div class="stats-row">
+      <div class="stat-box">
+        <div class="stat-box-label">Total Hours</div>
+        <div class="stat-box-val accent" id="stat-total">0</div>
+        <div class="stat-box-sub">invested</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-box-label">Today</div>
+        <div class="stat-box-val emerald" id="stat-today">0</div>
+        <div class="stat-box-sub">hrs logged</div>
+      </div>
+    </div>
+
+    <!-- Streak Card -->
+    <div class="card" style="padding:18px;">
+      <div class="card-title" style="margin-bottom:10px;"><span>🔥</span> Streak Tracker</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+        <div>
+          <div style="font-size:0.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px;">Current</div>
+          <div style="font-family:var(--mono);font-size:1.6rem;font-weight:700;color:var(--amber);" id="streak-current">0 <span style="font-size:.7rem;">days</span></div>
         </div>
-    </header>
-
-    <main class="max-w-7xl mx-auto px-4 py-8">
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
-            
-            <div class="lg:col-span-2 space-y-6">
-                <section class="bg-gray-950 border border-gray-800 rounded-2xl p-6">
-                    <div class="flex justify-between items-center mb-2">
-                        <h2 class="text-xl font-bold text-white flex items-center gap-2">
-                            <span>✅</span> Official IIT Syllabus Checklist
-                        </h2>
-                        <span id="stat-syllabus-progress" class="text-2xl font-extrabold text-indigo-400 font-mono">0%</span>
-                    </div>
-                    
-                    <div class="w-full bg-gray-800 rounded-full h-2 mb-6">
-                        <div id="progress-bar-fill" class="bg-indigo-500 h-2 rounded-full transition-all duration-500" style="width: 0%"></div>
-                    </div>
-                    
-                    <div class="space-y-3" id="checklist-container">
-                        
-                        <div class="accordion-item border border-gray-800 rounded-xl bg-gray-900/10 overflow-hidden">
-                            <button class="accordion-header w-full flex justify-between items-center p-4 bg-gray-900/40 hover:bg-gray-900/60 transition-colors text-left font-semibold text-indigo-400 text-sm tracking-wide cursor-pointer uppercase">
-                                <span>1. Engineering Mathematics & Discrete Math</span>
-                                <svg class="rotate-icon w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                            </button>
-                            <div class="accordion-content">
-                                <div class="p-4 grid grid-cols-1 md:grid-cols-2 gap-3 text-xs text-gray-300 border-t border-gray-800 bg-gray-950/40">
-                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="em-1" class="mt-0.5 accent-indigo-500 rounded"> Propositional and first-order logic</label>
-                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="em-2" class="mt-0.5 accent-indigo-500 rounded"> Sets, relations, functions, partial orders & lattices</label>
-                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="em-3" class="mt-0.5 accent-indigo-500 rounded"> Monoids & Groups</label>
-                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="em-4" class="mt-0.5 accent-indigo-500 rounded"> Graphs: connectivity, matching, colouring</label>
-                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="em-5" class="mt-0.5 accent-indigo-500 rounded"> Combinatorics: counting, recurrence relations, generating functions</label>
-                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="em-6" class="mt-0.5 accent-indigo-500 rounded"> Linear Algebra: Matrices, determinants, system of linear equations</label>
-                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="em-7" class="mt-0.5 accent-indigo-500 rounded"> Eigenvalues/eigenvectors & LU decomposition</label>
-                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="em-8" class="mt-0.5 accent-indigo-500 rounded"> Calculus: Limits, continuity, differentiability, maxima/minima, mean value theorem, integration</label>
-                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="em-9" class="mt-0.5 accent-indigo-500 rounded"> Probability: Random variables (Uniform, normal, exponential, Poisson, binomial)</label>
-                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="em-10" class="mt-0.5 accent-indigo-500 rounded"> Mean, median, mode, std deviation, conditional probability & Bayes theorem</label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="accordion-item border border-gray-800 rounded-xl bg-gray-900/10 overflow-hidden">
-                            <button class="accordion-header w-full flex justify-between items-center p-4 bg-gray-900/40 hover:bg-gray-900/60 transition-colors text-left font-semibold text-indigo-400 text-sm tracking-wide cursor-pointer uppercase">
-                                <span>2. Digital Logic</span>
-                                <svg class="rotate-icon w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                            </button>
-                            <div class="accordion-content">
-                                <div class="p-4 grid grid-cols-1 md:grid-cols-2 gap-3 text-xs text-gray-300 border-t border-gray-800 bg-gray-950/40">
-                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="dl-1" class="mt-0.5 accent-indigo-500 rounded"> Boolean algebra</label>
-                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="dl-2" class="mt-0.5 accent-indigo-500 rounded"> Minimization of functions</label>
-                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="dl-3" class="mt-0.5 accent-indigo-500 rounded"> Combinational circuits</label>
-                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="dl-4" class="mt-0.5 accent-indigo-500 rounded"> Sequential circuits</label>
-                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="dl-5" class="mt-0.5 accent-indigo-500 rounded"> Number representations & computer arithmetic (fixed & floating point)</label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="accordion-item border border-gray-800 rounded-xl bg-gray-900/10 overflow-hidden">
-                            <button class="accordion-header w-full flex justify-between items-center p-4 bg-gray-900/40 hover:bg-gray-900/60 transition-colors text-left font-semibold text-indigo-400 text-sm tracking-wide cursor-pointer uppercase">
-                                <span>3. Computer Organization and Architecture</span>
-                                <svg class="rotate-icon w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                            </button>
-                            <div class="accordion-content">
-                                <div class="p-4 grid grid-cols-1 md:grid-cols-2 gap-3 text-xs text-gray-300 border-t border-gray-800 bg-gray-950/40">
-                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="coa-1" class="mt-0.5 accent-indigo-500 rounded"> Machine instructions and addressing modes</label>
-                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="coa-2" class="mt-0.5 accent-indigo-500 rounded"> ALU, data path and control unit</label>
-                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="coa-3" class="mt-0.5 accent-indigo-500 rounded"> Instruction pipelining and Pipeline hazards</label>
-                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="coa-4" class="mt-0.5 accent-indigo-500 rounded"> Memory hierarchy: cache, main memory and secondary storage</label>
-                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="coa-5" class="mt-0.5 accent-indigo-500 rounded"> I/O interface (interrupt and DMA mode)</label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="accordion-item border border-gray-800 rounded-xl bg-gray-900/10 overflow-hidden">
-                            <button class="accordion-header w-full flex justify-between items-center p-4 bg-gray-900/40 hover:bg-gray-900/60 transition-colors text-left font-semibold text-indigo-400 text-sm tracking-wide cursor-pointer uppercase">
-                                <span>4. Programming and Data Structures</span>
-                                <svg class="rotate-icon w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                            </button>
-                            <div class="accordion-content">
-                                <div class="p-4 grid grid-cols-1 md:grid-cols-2 gap-3 text-xs text-gray-300 border-t border-gray-800 bg-gray-950/40">
-                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="pds-1" class="mt-0.5 accent-indigo-500 rounded"> Programming in C</label>
-                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="pds-2" class="mt-0.5 accent-indigo-500 rounded"> Recursion</label>
-                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="pds-3" class="mt-0.5 accent-indigo-500 rounded"> Arrays, stacks, queues, linked lists</label>
-                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="pds-4" class="mt-0.5 accent-indigo-500 rounded"> Trees, Binary Search Trees, Binary Heaps</label>
-                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="pds-5" class="mt-0.5 accent-indigo-500 rounded"> Graphs</label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="accordion-item border border-gray-800 rounded-xl bg-gray-900/10 overflow-hidden">
-                            <button class="accordion-header w-full flex justify-between items-center p-4 bg-gray-900/40 hover:bg-gray-900/60 transition-colors text-left font-semibold text-indigo-400 text-sm tracking-wide cursor-pointer uppercase">
-                                <span>5. Algorithms</span>
-                                <svg class="rotate-icon w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                            </button>
-                            <div class="accordion-content">
-                                <div class="p-4 grid grid-cols-1 md:grid-cols-2 gap-3 text-xs text-gray-300 border-t border-gray-800 bg-gray-950/40">
-                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="algo-1" class="mt-0.5 accent-indigo-500 rounded"> Searching, sorting, hashing</label>
-                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="algo-2" class="mt-0.5 accent-indigo-500 rounded"> Asymptotic worst case time and space complexity</label>
-                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="algo-3" class="mt-0.5 accent-indigo-500 rounded"> Algorithm design techniques: Greedy method</label>
-                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="algo-4" class="mt-0.5 accent-indigo-500 rounded"> Algorithm design techniques: Dynamic Programming</label>
-                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="algo-5" class="mt-0.5 accent-indigo-500 rounded"> Algorithm design techniques: Divide-and-conquer</label>
-                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="algo-6" class="mt-0.5 accent-indigo-500 rounded"> Graph traversals, minimum spanning trees, shortest paths</label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="accordion-item border border-gray-800 rounded-xl bg-gray-900/10 overflow-hidden">
-                            <button class="accordion-header w-full flex justify-between items-center p-4 bg-gray-900/40 hover:bg-gray-900/60 transition-colors text-left font-semibold text-indigo-400 text-sm tracking-wide cursor-pointer uppercase">
-                                <span>6. Theory of Computation</span>
-                                <svg class="rotate-icon w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                            </button>
-                            <div class="accordion-content">
-                                <div class="p-4 grid grid-cols-1 md:grid-cols-2 gap-3 text-xs text-gray-300 border-t border-gray-800 bg-gray-950/40">
-                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="toc-1" class="mt-0.5 accent-indigo-500 rounded"> Regular expressions and finite automata</label>
-                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="toc-2" class="mt-0.5 accent-indigo-500 rounded"> Context-free grammars and push-down automata</label>
-                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="toc-3" class="mt-0.5 accent-indigo-500 rounded"> Regular and context-free languages, pumping lemma</label>
-                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="toc-4" class="mt-0.5 accent-indigo-500 rounded"> Turing machines and undecidability</label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="accordion-item border border-gray-800 rounded-xl bg-gray-900/10 overflow-hidden">
-                            <button class="accordion-header w-full flex justify-between items-center p-4 bg-gray-900/40 hover:bg-gray-900/60 transition-colors text-left font-semibold text-indigo-400 text-sm tracking-wide cursor-pointer uppercase">
-                                <span>7. Compiler Design</span>
-                                <svg class="rotate-icon w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                            </button>
-                            <div class="accordion-content">
-                                <div class="p-4 grid grid-cols-1 md:grid-cols-2 gap-3 text-xs text-gray-300 border-t border-gray-800 bg-gray-950/40">
-                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="cd-1" class="mt-0.5 accent-indigo-500 rounded"> Lexical analysis</label>
-                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="cd-2" class="mt-0.5 accent-indigo-500 rounded"> Parsing, Syntax-Directed Translation</label>
-                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="cd-3" class="mt-0.5 accent-indigo-500 rounded"> Runtime environments</label>
-                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="cd-4" class="mt-0.5 accent-indigo-500 rounded"> Intermediate code generation</label>
-                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="cd-5" class="mt-0.5 accent-indigo-500 rounded"> Local optimization</label>
-                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="cd-6" class="mt-0.5 accent-indigo-500 rounded"> Data flow analysis: constant propagation, liveness analysis, common subexpression elimination</label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="accordion-item border border-gray-800 rounded-xl bg-gray-900/10 overflow-hidden">
-                            <button class="accordion-header w-full flex justify-between items-center p-4 bg-gray-900/40 hover:bg-gray-900/60 transition-colors text-left font-semibold text-indigo-400 text-sm tracking-wide cursor-pointer uppercase">
-                                <span>8. Operating Systems</span>
-                                <svg class="rotate-icon w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                            </button>
-                            <div class="accordion-content">
-                                <div class="p-4 grid grid-cols-1 md:grid-cols-2 gap-3 text-xs text-gray-300 border-t border-gray-800 bg-gray-950/40">
-                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="os-1" class="mt-0.5 accent-indigo-500 rounded"> System calls, processes, threads</label>
-                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="os-2" class="mt-0.5 accent-indigo-500 rounded"> Inter-process communication, concurrency and synchronization</label>
-                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="os-3" class="mt-0.5 accent-indigo-500 rounded"> Deadlock</label>
-                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="os-4" class="mt-0.5 accent-indigo-500 rounded"> CPU and I/O scheduling</label>
-                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="os-5" class="mt-0.5 accent-indigo-500 rounded"> Memory management and virtual memory</label>
-                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="os-6" class="mt-0.5 accent-indigo-500 rounded"> File systems</label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="accordion-item border border-gray-800 rounded-xl bg-gray-900/10 overflow-hidden">
-                            <button class="accordion-header w-full flex justify-between items-center p-4 bg-gray-900/40 hover:bg-gray-900/60 transition-colors text-left font-semibold text-indigo-400 text-sm tracking-wide cursor-pointer uppercase">
-                                <span>9. Databases (DBMS)</span>
-                                <svg class="rotate-icon w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                            </button>
-                            <div class="accordion-content">
-                                <div class="p-4 grid grid-cols-1 md:grid-cols-2 gap-3 text-xs text-gray-300 border-t border-gray-800 bg-gray-950/40">
-                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="db-1" class="mt-0.5 accent-indigo-500 rounded"> ER-model</label>
-                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="db-2" class="mt-0.5 accent-indigo-500 rounded"> Relational model: relational algebra, tuple calculus</label>
-                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="db-3" class="mt-0.5 accent-indigo-500 rounded"> SQL queries</label>
-                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="db-4" class="mt-0.5 accent-indigo-500 rounded"> Integrity constraints, Normal forms</label>
-                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="db-5" class="mt-0.5 accent-indigo-500 rounded"> File organization, Indexing (e.g., B and B+ trees)</label>
-                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="db-6" class="mt-0.5 accent-indigo-500 rounded"> Transactions and concurrency control</label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="accordion-item border border-gray-800 rounded-xl bg-gray-900/10 overflow-hidden">
-                            <button class="accordion-header w-full flex justify-between items-center p-4 bg-gray-900/40 hover:bg-gray-900/60 transition-colors text-left font-semibold text-indigo-400 text-sm tracking-wide cursor-pointer uppercase">
-                                <span>10. Computer Networks</span>
-                                <svg class="rotate-icon w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                            </button>
-                            <div class="accordion-content">
-                                <div class="p-4 grid grid-cols-1 md:grid-cols-2 gap-3 text-xs text-gray-300 border-t border-gray-800 bg-gray-950/40">
-                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="cn-1" class="mt-0.5 accent-indigo-500 rounded"> Concept of Layering: OSI and TCP/IP Protocol Stacks</label>
-                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="cn-2" class="mt-0.5 accent-indigo-500 rounded"> Basics of packet, circuit, and virtual circuit switching</label>
-                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="cn-3" class="mt-0.5 accent-indigo-500 rounded"> Data Link Layer: Framing, error detection, Medium Access Control, Ethernet bridging</label>
-                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="cn-4" class="mt-0.5 accent-indigo-500 rounded"> Routing Protocols: Shortest path, flooding, distance vector & link state routing</label>
-                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="cn-5" class="mt-0.5 accent-indigo-500 rounded"> Fragmentation and IP addressing, IPv4, CIDR notation</label>
-                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="cn-6" class="mt-0.5 accent-indigo-500 rounded"> Basics of IP support protocols (ARP, DHCP, ICMP), NAT</label>
-                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="cn-7" class="mt-0.5 accent-indigo-500 rounded"> Transport Layer: Flow control and congestion control, UDP, TCP, sockets</label>
-                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="cn-8" class="mt-0.5 accent-indigo-500 rounded"> Application Layer Protocols: DNS, SMTP, HTTP, FTP, Email</label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="accordion-item border border-gray-800 rounded-xl bg-gray-900/10 overflow-hidden">
-                            <button class="accordion-header w-full flex justify-between items-center p-4 bg-gray-900/40 hover:bg-gray-900/60 transition-colors text-left font-semibold text-emerald-400 text-sm tracking-wide cursor-pointer uppercase">
-                                <span>General Aptitude</span>
-                                <svg class="rotate-icon w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
-                            </button>
-                            <div class="accordion-content">
-                                <div class="p-4 grid grid-cols-1 md:grid-cols-2 gap-3 text-xs text-gray-300 border-t border-gray-800 bg-gray-950/40">
-                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="ga-1" class="mt-0.5 accent-emerald-500 rounded"> Verbal Aptitude: Basic English grammar, vocabulary, reading/comprehension, narrative sequencing</label>
-                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="ga-2" class="mt-0.5 accent-emerald-500 rounded"> Quantitative Aptitude: Ratios, percentages, powers, exponents, logarithms, series, permutations/combinations, mensuration, geometry, elementary statistics & probability</label>
-                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="ga-3" class="mt-0.5 accent-emerald-500 rounded"> Analytical Aptitude: Logic, pattern recognition, number/alphanumeric series, syllogisms, analogies</label>
-                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="ga-4" class="mt-0.5 accent-emerald-500 rounded"> Spatial Aptitude: Translation, rotation, scaling, mirroring, assembling, grouping, paper folding/cutting</label>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                </section>
-            </div>
-
-            <div class="space-y-6 lg:sticky lg:top-24">
-                
-                <section class="bg-gradient-to-br from-indigo-950 to-slate-900 border border-indigo-500/30 rounded-2xl p-5 text-center shadow-xl">
-                    <h2 class="text-xs font-semibold uppercase tracking-widest text-indigo-300 mb-3">Countdown to Next GATE</h2>
-                    <div class="grid grid-cols-4 gap-1.5 font-mono text-center">
-                        <div class="bg-gray-950/80 p-2 rounded-lg border border-gray-800">
-                            <div id="days" class="text-2xl font-extrabold text-white">00</div>
-                            <div class="text-[9px] text-gray-400 uppercase mt-0.5">Days</div>
-                        </div>
-                        <div class="bg-gray-950/80 p-2 rounded-lg border border-gray-800">
-                            <div id="hours" class="text-2xl font-extrabold text-white">00</div>
-                            <div class="text-[9px] text-gray-400 uppercase mt-0.5">Hours</div>
-                        </div>
-                        <div class="bg-gray-950/80 p-2 rounded-lg border border-gray-800">
-                            <div id="minutes" class="text-2xl font-extrabold text-white">00</div>
-                            <div class="text-[9px] text-gray-400 uppercase mt-0.5">Mins</div>
-                        </div>
-                        <div class="bg-gray-950/80 p-2 rounded-lg border border-gray-800">
-                            <div id="seconds" class="text-2xl font-extrabold text-emerald-400">00</div>
-                            <div class="text-[9px] text-gray-400 uppercase mt-0.5">Secs</div>
-                        </div>
-                    </div>
-                </section>
-
-                <section class="bg-gray-950 border border-gray-800 rounded-2xl p-5">
-                    <div class="bg-gray-900 p-4 rounded-xl border border-gray-800">
-                        <div class="text-xs text-gray-400 uppercase font-medium">Total Study Hours Invested</div>
-                        <div id="stat-total-hours" class="text-3xl font-extrabold text-white mt-1">0 hrs</div>
-                    </div>
-                </section>
-
-                <section class="bg-gray-950 border border-gray-800 rounded-2xl p-5">
-                    <h2 class="text-md font-bold text-white mb-3 flex items-center gap-2">
-                        <span>📅</span> Log Study Hours
-                    </h2>
-                    <form id="study-form" class="space-y-3 mb-4">
-                        <input type="date" id="study-date" required class="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-500 text-white">
-                        <input type="number" id="study-hours" step="0.5" min="0" max="24" placeholder="Hours studied (e.g. 6.5)" required class="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-500 text-white">
-                        <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-semibold py-2 rounded-lg transition-colors cursor-pointer">Log Work</button>
-                    </form>
-                    
-                    <div class="max-h-48 overflow-y-auto pr-1">
-                        <table class="w-full text-left text-xs">
-                            <thead>
-                                <tr class="border-b border-gray-800 text-gray-400 sticky top-0 bg-gray-950 pb-1">
-                                    <th class="pb-1 font-medium">Date</th>
-                                    <th class="pb-1 font-medium text-right">Time</th>
-                                </tr>
-                            </thead>
-                            <tbody id="hours-table-body" class="divide-y divide-gray-800/50">
-                                </tbody>
-                        </table>
-                    </div>
-                </section>
-
-            </div>
+        <div>
+          <div style="font-size:0.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px;">Best</div>
+          <div style="font-family:var(--mono);font-size:1.6rem;font-weight:700;color:#ff6b35;" id="streak-best">0 <span style="font-size:.7rem;">days</span></div>
         </div>
-    </main>
+      </div>
+      <div class="streak-bar-track"><div class="streak-bar-fill" id="streak-bar" style="width:0%"></div></div>
+      <div class="streak-sub" id="streak-sub">Log today to keep your streak alive!</div>
+    </div>
 
-    <script>
-        // 1. EXAM COUNTDOWN
-        // Configured for typical February exam cycle targeting early Saturday window
-        const TARGET_DATE = new Date("February 6, 2027 09:00:00").getTime();
+    <!-- Heatmap Calendar -->
+    <div class="card" style="padding:18px;">
+      <div class="card-title"><span>📅</span> Study Heatmap</div>
 
-        function updateCountdown() {
-            const now = new Date().getTime();
-            const difference = TARGET_DATE - now;
+      <div class="heatmap-nav">
+        <button class="nav-btn" id="prev-month">‹</button>
+        <div class="heatmap-month" id="cal-month-label">May 2025</div>
+        <button class="nav-btn" id="next-month">›</button>
+      </div>
 
-            if (difference < 0) {
-                document.getElementById("days").innerText = "00";
-                document.getElementById("hours").innerText = "00";
-                document.getElementById("minutes").innerText = "00";
-                document.getElementById("seconds").innerText = "00";
-                return;
-            }
+      <div class="heatmap-days-header">
+        <div class="day-name">Su</div><div class="day-name">Mo</div><div class="day-name">Tu</div>
+        <div class="day-name">We</div><div class="day-name">Th</div><div class="day-name">Fr</div><div class="day-name">Sa</div>
+      </div>
 
-            const d = Math.floor(difference / (1000 * 60 * 60 * 24));
-            const h = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const m = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
-            const s = Math.floor((difference % (1000 * 60)) / (1000));
+      <div class="heatmap-grid" id="cal-grid"></div>
 
-            document.getElementById("days").innerText = String(d).padStart(2, '0');
-            document.getElementById("hours").innerText = String(h).padStart(2, '0');
-            document.getElementById("minutes").innerText = String(m).padStart(2, '0');
-            document.getElementById("seconds").innerText = String(s).padStart(2, '0');
+      <div class="heatmap-legend">
+        <div class="legend-label">Less</div>
+        <div class="legend-box" style="background:#161f2e;border:1px solid #1e2d45;"></div>
+        <div class="legend-box heat-1"></div>
+        <div class="legend-box heat-2"></div>
+        <div class="legend-box heat-3"></div>
+        <div class="legend-box heat-4"></div>
+        <div class="legend-box heat-5"></div>
+        <div class="legend-label">More</div>
+      </div>
+    </div>
+
+    <!-- Daily Goal Progress -->
+    <div class="card" style="padding:18px;">
+      <div class="card-title"><span>🎯</span> Daily Goal</div>
+      <div class="goal-row">
+        <div class="goal-label">Today's target:</div>
+        <div style="display:flex;align-items:center;gap:6px;margin-left:auto;">
+          <input type="number" id="daily-goal" class="inp" style="width:60px;padding:4px 8px;text-align:center;" min="1" max="24" value="8">
+          <span style="font-family:var(--mono);font-size:0.65rem;color:var(--muted);">hrs</span>
+        </div>
+      </div>
+      <div class="goal-track"><div class="goal-fill" id="goal-fill" style="width:0%"></div></div>
+      <div style="display:flex;justify-content:space-between;margin-top:5px;">
+        <div class="goal-val" id="goal-done-lbl">0 hrs done</div>
+        <div class="goal-val" id="goal-target-lbl">of 8 hrs</div>
+      </div>
+    </div>
+
+    <!-- Log Study -->
+    <div class="card" style="padding:18px;">
+      <div class="card-title"><span>📝</span> Log Study Session</div>
+      <div class="form-row">
+        <input type="date" id="study-date" class="inp">
+        <input type="number" id="study-hours" class="inp" step="0.5" min="0.5" max="24" placeholder="hrs (e.g. 3.5)">
+      </div>
+      <button class="btn-log" id="log-btn">Log Session</button>
+
+      <div class="log-scroll">
+        <table>
+          <thead><tr><th>Date</th><th>Note</th><th style="text-align:right;">Hours</th></tr></thead>
+          <tbody id="log-body"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Motivational quote -->
+    <div class="quote-card">
+      "Preparation is not about talent. It is about consistency, discipline, and the courage to show up every single day."
+      <span class="quote-attr">— Keep grinding 🎓</span>
+    </div>
+
+  </div><!-- end right col -->
+</main>
+
+<div id="toast">✓ Session logged!</div>
+
+<script>
+// ═══════════════════════ SYLLABUS DATA ═══════════════════════
+const SYLLABUS = [
+  {
+    id: "em",
+    num: "S1",
+    title: "Engineering Mathematics",
+    topics: [
+      { id: "em-1", text: "Propositional and first-order logic" },
+      { id: "em-2", text: "Sets, relations, functions, partial orders and lattices" },
+      { id: "em-3", text: "Monoids and Groups" },
+      { id: "em-4", text: "Graphs: connectivity, matching, colouring" },
+      { id: "em-5", text: "Combinatorics: counting, recurrence relations, generating functions" },
+      { id: "em-6", text: "Linear Algebra: Matrices, determinants, system of linear equations" },
+      { id: "em-7", text: "Eigenvalues & eigenvectors, LU decomposition" },
+      { id: "em-8", text: "Calculus: Limits, continuity, differentiability, maxima/minima, mean value theorem, integration" },
+      { id: "em-9", text: "Probability: Random variables — Uniform, Normal, Exponential, Poisson, Binomial distributions" },
+      { id: "em-10", text: "Mean, median, mode, standard deviation; Conditional probability & Bayes theorem" },
+    ]
+  },
+  {
+    id: "dl",
+    num: "S2",
+    title: "Digital Logic",
+    topics: [
+      { id: "dl-1", text: "Boolean algebra" },
+      { id: "dl-2", text: "Minimization of Boolean functions" },
+      { id: "dl-3", text: "Combinational circuits" },
+      { id: "dl-4", text: "Sequential circuits" },
+      { id: "dl-5", text: "Number representations & computer arithmetic (fixed and floating point)" },
+    ]
+  },
+  {
+    id: "coa",
+    num: "S3",
+    title: "Computer Organization & Architecture",
+    topics: [
+      { id: "coa-1", text: "Machine instructions and addressing modes" },
+      { id: "coa-2", text: "ALU, data-path and control unit" },
+      { id: "coa-3", text: "Instruction pipelining and pipeline hazards" },
+      { id: "coa-4", text: "Memory hierarchy: cache, main memory and secondary storage" },
+      { id: "coa-5", text: "I/O interface (interrupt and DMA mode)" },
+    ]
+  },
+  {
+    id: "pds",
+    num: "S4",
+    title: "Programming and Data Structures",
+    topics: [
+      { id: "pds-1", text: "Programming in C" },
+      { id: "pds-2", text: "Recursion" },
+      { id: "pds-3", text: "Arrays, stacks, queues, linked lists" },
+      { id: "pds-4", text: "Trees, Binary Search Trees, Binary Heaps" },
+      { id: "pds-5", text: "Graphs (representation and basic properties)" },
+    ]
+  },
+  {
+    id: "algo",
+    num: "S5",
+    title: "Algorithms",
+    topics: [
+      { id: "algo-1", text: "Searching, sorting, hashing" },
+      { id: "algo-2", text: "Asymptotic worst-case time and space complexity" },
+      { id: "algo-3", text: "Algorithm design: Greedy method" },
+      { id: "algo-4", text: "Algorithm design: Dynamic Programming" },
+      { id: "algo-5", text: "Algorithm design: Divide-and-conquer" },
+      { id: "algo-6", text: "Graph traversals, minimum spanning trees, shortest paths" },
+    ]
+  },
+  {
+    id: "toc",
+    num: "S6",
+    title: "Theory of Computation",
+    topics: [
+      { id: "toc-1", text: "Regular expressions and finite automata" },
+      { id: "toc-2", text: "Context-free grammars and push-down automata" },
+      { id: "toc-3", text: "Regular and context-free languages, pumping lemma" },
+      { id: "toc-4", text: "Turing machines and undecidability" },
+    ]
+  },
+  {
+    id: "cd",
+    num: "S7",
+    title: "Compiler Design",
+    topics: [
+      { id: "cd-1", text: "Lexical analysis" },
+      { id: "cd-2", text: "Parsing and syntax-directed translation" },
+      { id: "cd-3", text: "Runtime environments" },
+      { id: "cd-4", text: "Intermediate code generation" },
+      { id: "cd-5", text: "Local optimization" },
+      { id: "cd-6", text: "Data flow analyses: constant propagation, liveness analysis, common subexpression elimination" },
+    ]
+  },
+  {
+    id: "os",
+    num: "S8",
+    title: "Operating Systems",
+    topics: [
+      { id: "os-1", text: "System calls, processes, threads" },
+      { id: "os-2", text: "Inter-process communication, concurrency and synchronization" },
+      { id: "os-3", text: "Deadlock" },
+      { id: "os-4", text: "CPU and I/O scheduling" },
+      { id: "os-5", text: "Memory management and virtual memory" },
+      { id: "os-6", text: "File systems" },
+    ]
+  },
+  {
+    id: "db",
+    num: "S9",
+    title: "Databases (DBMS)",
+    topics: [
+      { id: "db-1", text: "ER-model" },
+      { id: "db-2", text: "Relational model: relational algebra and tuple calculus" },
+      { id: "db-3", text: "SQL queries" },
+      { id: "db-4", text: "Integrity constraints and normal forms" },
+      { id: "db-5", text: "File organization, indexing (B-trees and B+-trees)" },
+      { id: "db-6", text: "Transactions and concurrency control" },
+    ]
+  },
+  {
+    id: "cn",
+    num: "S10",
+    title: "Computer Networks",
+    topics: [
+      { id: "cn-1", text: "Concept of layering: OSI and TCP/IP protocol stacks" },
+      { id: "cn-2", text: "Basics of packet, circuit and virtual circuit switching" },
+      { id: "cn-3", text: "Data link layer: framing, error detection, MAC, Ethernet bridging" },
+      { id: "cn-4", text: "Routing protocols: shortest path, flooding, distance vector, link-state routing" },
+      { id: "cn-5", text: "Fragmentation, IP addressing, IPv4, CIDR notation" },
+      { id: "cn-6", text: "IP support protocols: ARP, DHCP, ICMP; NAT" },
+      { id: "cn-7", text: "Transport layer: flow control, congestion control, UDP, TCP, sockets" },
+      { id: "cn-8", text: "Application layer protocols: DNS, SMTP, HTTP, FTP, Email" },
+    ]
+  },
+  {
+    id: "ga",
+    num: "GA",
+    title: "General Aptitude",
+    isGA: true,
+    topics: [
+      { id: "ga-1", text: "Verbal: Basic English grammar (tenses, articles, prepositions, verb-noun agreement)" },
+      { id: "ga-2", text: "Verbal: Vocabulary — words, idioms, and phrases in context" },
+      { id: "ga-3", text: "Verbal: Reading comprehension and narrative sequencing" },
+      { id: "ga-4", text: "Quantitative: Data interpretation — bar graphs, pie charts, 2D/3D plots, tables" },
+      { id: "ga-5", text: "Quantitative: Ratios, percentages, powers, exponents, logarithms, permutations, combinations, series" },
+      { id: "ga-6", text: "Quantitative: Mensuration, geometry, elementary statistics and probability" },
+      { id: "ga-7", text: "Analytical: Logic — deduction, induction, analogy, numerical relations and reasoning" },
+      { id: "ga-8", text: "Spatial: Transformation of shapes — translation, rotation, scaling, mirroring, assembling, grouping" },
+      { id: "ga-9", text: "Spatial: Paper folding, cutting, and patterns in 2D and 3D" },
+    ]
+  }
+];
+
+// ═══════════════════════ STATE ═══════════════════════
+let checkedItems = JSON.parse(localStorage.getItem('gate2026_checked') || '[]');
+let studyLogs = JSON.parse(localStorage.getItem('gate2026_logs') || '[]');
+let dailyGoal = parseInt(localStorage.getItem('gate2026_goal') || '8');
+let calViewDate = new Date();
+
+// ═══════════════════════ BUILD CHECKLIST ═══════════════════════
+function buildChecklist() {
+  const container = document.getElementById('checklist-container');
+  container.innerHTML = '';
+
+  SYLLABUS.forEach(section => {
+    const block = document.createElement('div');
+    block.className = 'section-block';
+    block.dataset.id = section.id;
+
+    const checkedCount = section.topics.filter(t => checkedItems.includes(t.id)).length;
+    const total = section.topics.length;
+
+    block.innerHTML = `
+      <button class="section-header" aria-expanded="false">
+        <div class="section-header-left">
+          <span class="section-num ${section.isGA ? 'ga' : ''}">${section.num}</span>
+          <span class="section-title">${section.title}</span>
+        </div>
+        <span class="section-mini-prog">${checkedCount}/${total}</span>
+        <svg class="chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+      </button>
+      <div class="section-body">
+        <div class="topics-grid">
+          ${section.topics.map(t => {
+            const done = checkedItems.includes(t.id);
+            return `
+              <label class="topic-label ${section.isGA ? 'ga-label' : ''} ${done ? 'done' : ''}" data-id="${t.id}">
+                <input type="checkbox" data-id="${t.id}" ${done ? 'checked' : ''}>
+                <span>${t.text}</span>
+              </label>`;
+          }).join('')}
+        </div>
+      </div>
+    `;
+
+    container.appendChild(block);
+
+    // Accordion toggle
+    block.querySelector('.section-header').addEventListener('click', () => {
+      block.classList.toggle('open');
+    });
+
+    // Checkbox changes
+    block.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+      cb.addEventListener('change', () => {
+        const id = cb.dataset.id;
+        const label = cb.closest('.topic-label');
+        if (cb.checked) {
+          if (!checkedItems.includes(id)) checkedItems.push(id);
+          label.classList.add('done');
+        } else {
+          checkedItems = checkedItems.filter(i => i !== id);
+          label.classList.remove('done');
         }
-        setInterval(updateCountdown, 1000);
-        updateCountdown();
-
-        // 2. ACCORDION OPEN/CLOSE INTERACTION
-        const accordionHeaders = document.querySelectorAll('.accordion-header');
-        accordionHeaders.forEach(header => {
-            header.addEventListener('click', () => {
-                const item = header.parentElement;
-                item.classList.toggle('accordion-active');
-            });
-        });
-
-        // 3. PERSISTED REPOSITORY STORAGE MANAGEMENT (Local browser sandbox)
-        let studyLogs = JSON.parse(localStorage.getItem('gate_deep_logs')) || [];
-        let checkedItems = JSON.parse(localStorage.getItem('gate_deep_checked')) || [];
-
-        const studyForm = document.getElementById('study-form');
-        const hoursTableBody = document.getElementById('hours-table-body');
-        const statTotalHours = document.getElementById('stat-total-hours');
-        const statSyllabusProgress = document.getElementById('stat-syllabus-progress');
-        const progressBarFill = document.getElementById('progress-bar-fill');
-        const checkboxes = document.querySelectorAll('#checklist-container input[type="checkbox"]');
-
-        document.getElementById('study-date').valueAsDate = new Date();
-
-        function renderLogs() {
-            hoursTableBody.innerHTML = '';
-            let totalHours = 0;
-            studyLogs.sort((a, b) => new Date(b.date) - new Date(a.date));
-
-            studyLogs.forEach(log => {
-                totalHours += parseFloat(log.hours);
-                const row = document.createElement('tr');
-                row.className = "text-gray-400 border-b border-gray-900/40";
-                row.innerHTML = `
-                    <td class="py-2 font-mono">${new Date(log.date).toLocaleDateString('en-IN', {day: 'numeric', month: 'short'})}</td>
-                    <td class="py-2 text-right font-semibold text-white">${log.hours} hrs</td>
-                `;
-                hoursTableBody.appendChild(row);
-            });
-            statTotalHours.innerText = `${totalHours} hrs`;
+        localStorage.setItem('gate2026_checked', JSON.stringify(checkedItems));
+        updateProgress();
+        // Update section mini progress
+        const sec = SYLLABUS.find(s => s.topics.some(t => t.id === id));
+        if (sec) {
+          const cnt = sec.topics.filter(t => checkedItems.includes(t.id)).length;
+          block.querySelector('.section-mini-prog').textContent = `${cnt}/${sec.topics.length}`;
         }
+      });
+    });
+  });
+}
 
-        studyForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const date = document.getElementById('study-date').value;
-            const hours = document.getElementById('study-hours').value;
+function updateProgress() {
+  const total = SYLLABUS.reduce((s, sec) => s + sec.topics.length, 0);
+  const done = checkedItems.length;
+  const pct = Math.round((done / total) * 100);
+  document.getElementById('pct').textContent = pct + '%';
+  document.getElementById('prog-fill').style.width = pct + '%';
+}
 
-            studyLogs.push({ date, hours });
-            localStorage.setItem('gate_deep_logs', JSON.stringify(studyLogs));
-            renderLogs();
-            document.getElementById('study-hours').value = '';
-        });
+// ═══════════════════════ COUNTDOWN ═══════════════════════
+const GATE_DATE = new Date('2026-02-01T09:30:00+05:30').getTime();
 
-        // 4. SYLLABUS CALCULATION LOGIC
-        function updateSyllabusStats() {
-            const totalItems = checkboxes.length;
-            const currentCheckedCount = document.querySelectorAll('#checklist-container input[type="checkbox"]:checked').length;
-            const percentage = totalItems > 0 ? Math.round((currentCheckedCount / totalItems) * 100) : 0;
-            
-            statSyllabusProgress.innerText = `${percentage}%`;
-            progressBarFill.style.width = `${percentage}%`;
-        }
+function tick() {
+  const now = Date.now();
+  const diff = GATE_DATE - now;
+  if (diff <= 0) {
+    ['cd-days','cd-hours','cd-mins','cd-secs'].forEach(id => document.getElementById(id).textContent = '00');
+    return;
+  }
+  const d = Math.floor(diff / 86400000);
+  const h = Math.floor((diff % 86400000) / 3600000);
+  const m = Math.floor((diff % 3600000) / 60000);
+  const s = Math.floor((diff % 60000) / 1000);
+  document.getElementById('cd-days').textContent = String(d).padStart(2,'0');
+  document.getElementById('cd-hours').textContent = String(h).padStart(2,'0');
+  document.getElementById('cd-mins').textContent = String(m).padStart(2,'0');
+  document.getElementById('cd-secs').textContent = String(s).padStart(2,'0');
+}
+setInterval(tick, 1000);
+tick();
 
-        checkboxes.forEach(box => {
-            const id = box.getAttribute('data-id');
-            if (checkedItems.includes(id)) box.checked = true;
+// ═══════════════════════ HEATMAP ═══════════════════════
+function dateKey(d) {
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
 
-            box.addEventListener('change', () => {
-                const currentId = box.getAttribute('data-id');
-                if (box.checked) {
-                    if (!checkedItems.includes(currentId)) checkedItems.push(currentId);
-                } else {
-                    checkedItems = checkedItems.filter(item => item !== currentId);
-                }
-                localStorage.setItem('gate_deep_checked', JSON.stringify(checkedItems));
-                updateSyllabusStats();
-            });
-        });
+function buildHoursMap() {
+  const map = {};
+  studyLogs.forEach(log => {
+    map[log.date] = (map[log.date] || 0) + parseFloat(log.hours);
+  });
+  return map;
+}
 
-        // Bootstrap Initial UI Layout state on render
-        renderLogs();
-        updateSyllabusStats();
-    </script>
+function heatClass(hours) {
+  if (!hours || hours <= 0) return '';
+  if (hours < 2) return 'heat-1';
+  if (hours < 4) return 'heat-2';
+  if (hours < 6) return 'heat-3';
+  if (hours < 8) return 'heat-4';
+  return 'heat-5';
+}
+
+function renderCalendar() {
+  const year = calViewDate.getFullYear();
+  const month = calViewDate.getMonth();
+  const label = calViewDate.toLocaleString('default', { month: 'long', year: 'numeric' });
+  document.getElementById('cal-month-label').textContent = label;
+
+  const hoursMap = buildHoursMap();
+  const today = dateKey(new Date());
+  const firstDay = new Date(year, month, 1).getDay();
+  const daysInMonth = new Date(year, month+1, 0).getDate();
+
+  const grid = document.getElementById('cal-grid');
+  grid.innerHTML = '';
+
+  // Empty cells
+  for (let i = 0; i < firstDay; i++) {
+    const el = document.createElement('div');
+    el.className = 'cal-day empty';
+    grid.appendChild(el);
+  }
+
+  for (let d = 1; d <= daysInMonth; d++) {
+    const key = `${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const hrs = hoursMap[key] || 0;
+    const el = document.createElement('div');
+    el.className = 'cal-day ' + heatClass(hrs);
+    if (key === today) el.classList.add('today');
+
+    el.innerHTML = `
+      <div class="cal-day-num">${d}</div>
+      <div class="cal-tooltip">${hrs > 0 ? hrs + ' hrs' : 'No study'}</div>
+    `;
+
+    // Click to quick-log
+    el.addEventListener('click', () => {
+      const dateInput = document.getElementById('study-date');
+      dateInput.value = key;
+      document.getElementById('study-hours').focus();
+    });
+
+    grid.appendChild(el);
+  }
+}
+
+document.getElementById('prev-month').addEventListener('click', () => {
+  calViewDate.setMonth(calViewDate.getMonth() - 1);
+  renderCalendar();
+});
+
+document.getElementById('next-month').addEventListener('click', () => {
+  calViewDate.setMonth(calViewDate.getMonth() + 1);
+  renderCalendar();
+});
+
+// ═══════════════════════ STREAK ═══════════════════════
+function calcStreaks() {
+  const hoursMap = buildHoursMap();
+  const today = new Date();
+  today.setHours(0,0,0,0);
+
+  let current = 0;
+  let best = 0;
+  let streak = 0;
+  let tempBest = 0;
+
+  // Build sorted unique dates
+  const allDates = Object.keys(hoursMap)
+    .filter(k => hoursMap[k] > 0)
+    .sort();
+
+  if (allDates.length === 0) return { current: 0, best: 0 };
+
+  // Calculate best streak from sorted dates
+  let runLen = 1;
+  for (let i = 1; i < allDates.length; i++) {
+    const prev = new Date(allDates[i-1]);
+    const cur = new Date(allDates[i]);
+    const diff = (cur - prev) / 86400000;
+    if (diff === 1) {
+      runLen++;
+    } else {
+      best = Math.max(best, runLen);
+      runLen = 1;
+    }
+  }
+  best = Math.max(best, runLen);
+
+  // Calculate current streak (counting backwards from today or yesterday)
+  let checkDate = new Date(today);
+  const todayKey = dateKey(checkDate);
+  if (!hoursMap[todayKey]) {
+    // Check if yesterday was studied
+    checkDate.setDate(checkDate.getDate() - 1);
+  }
+  current = 0;
+  while (true) {
+    const k = dateKey(checkDate);
+    if (hoursMap[k] && hoursMap[k] > 0) {
+      current++;
+      checkDate.setDate(checkDate.getDate() - 1);
+    } else break;
+  }
+
+  return { current, best };
+}
+
+function updateStreaks() {
+  const { current, best } = calcStreaks();
+  document.getElementById('streak-current').innerHTML = `${current} <span style="font-size:.7rem;">days</span>`;
+  document.getElementById('streak-best').innerHTML = `${best} <span style="font-size:.7rem;">days</span>`;
+  const pct = best > 0 ? Math.min(100, Math.round((current / best) * 100)) : 0;
+  document.getElementById('streak-bar').style.width = pct + '%';
+
+  const todayKey = dateKey(new Date());
+  const hoursMap = buildHoursMap();
+  if (hoursMap[todayKey]) {
+    document.getElementById('streak-sub').textContent = `🟢 Studied today! Keep it up.`;
+  } else if (current > 0) {
+    document.getElementById('streak-sub').textContent = `⚠️ Log today to extend your ${current}-day streak!`;
+  } else {
+    document.getElementById('streak-sub').textContent = `Start studying to build a streak!`;
+  }
+}
+
+// ═══════════════════════ STATS ═══════════════════════
+function updateStats() {
+  const hoursMap = buildHoursMap();
+  const total = Object.values(hoursMap).reduce((a,b) => a+b, 0);
+  const todayKey = dateKey(new Date());
+  const todayHrs = hoursMap[todayKey] || 0;
+
+  document.getElementById('stat-total').textContent = total % 1 === 0 ? total : total.toFixed(1);
+  document.getElementById('stat-today').textContent = todayHrs % 1 === 0 ? todayHrs : todayHrs.toFixed(1);
+
+  // Daily goal
+  const goal = parseInt(document.getElementById('daily-goal').value) || 8;
+  const pct = Math.min(100, Math.round((todayHrs / goal) * 100));
+  document.getElementById('goal-fill').style.width = pct + '%';
+  document.getElementById('goal-done-lbl').textContent = todayHrs + ' hrs done';
+  document.getElementById('goal-target-lbl').textContent = 'of ' + goal + ' hrs';
+}
+
+// ═══════════════════════ LOG TABLE ═══════════════════════
+function renderLogTable() {
+  const body = document.getElementById('log-body');
+  body.innerHTML = '';
+  const sorted = [...studyLogs].sort((a,b) => b.date.localeCompare(a.date));
+  sorted.slice(0, 20).forEach((log, idx) => {
+    const d = new Date(log.date + 'T00:00:00');
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${d.toLocaleDateString('en-IN', {day:'numeric',month:'short'})}</td>
+      <td><button class="del-btn" data-date="${log.date}" data-hrs="${log.hours}">✕</button></td>
+      <td>${log.hours} hrs</td>
+    `;
+    body.appendChild(tr);
+  });
+
+  body.querySelectorAll('.del-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const date = btn.dataset.date;
+      const hrs = btn.dataset.hrs;
+      const idx = studyLogs.findIndex(l => l.date === date && String(l.hours) === hrs);
+      if (idx > -1) {
+        studyLogs.splice(idx, 1);
+        localStorage.setItem('gate2026_logs', JSON.stringify(studyLogs));
+        refreshAll();
+      }
+    });
+  });
+}
+
+// ═══════════════════════ LOG FORM ═══════════════════════
+document.getElementById('log-btn').addEventListener('click', () => {
+  const date = document.getElementById('study-date').value;
+  const hours = parseFloat(document.getElementById('study-hours').value);
+  if (!date || isNaN(hours) || hours <= 0) return;
+
+  studyLogs.push({ date, hours });
+  localStorage.setItem('gate2026_logs', JSON.stringify(studyLogs));
+  document.getElementById('study-hours').value = '';
+  refreshAll();
+  showToast('✓ ' + hours + ' hrs logged for ' + date);
+});
+
+// ═══════════════════════ DAILY GOAL ═══════════════════════
+document.getElementById('daily-goal').addEventListener('change', (e) => {
+  localStorage.setItem('gate2026_goal', e.target.value);
+  updateStats();
+});
+
+// ═══════════════════════ TOAST ═══════════════════════
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// ═══════════════════════ REFRESH ALL ═══════════════════════
+function refreshAll() {
+  renderCalendar();
+  renderLogTable();
+  updateStats();
+  updateStreaks();
+}
+
+// ═══════════════════════ INIT ═══════════════════════
+document.getElementById('study-date').valueAsDate = new Date();
+document.getElementById('daily-goal').value = dailyGoal;
+
+buildChecklist();
+updateProgress();
+refreshAll();
+</script>
 </body>
 </html>
