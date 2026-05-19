@@ -1,181 +1,233 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GATE Prep Tracker Dashboard</title>
+    <title>GATE CS Complete Tracker</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
-
 <body class="bg-gray-900 text-gray-100 font-sans min-h-screen">
 
     <!-- Navbar -->
     <header class="border-b border-gray-800 bg-gray-900/50 backdrop-blur sticky top-0 z-50">
-        <div class="max-w-5xl mx-auto px-4 py-4 flex justify-between items-center">
-            <h1 class="text-xl font-bold tracking-wider text-indigo-400">⚡ GATE TARGET DASHBOARD</h1>
-            <span
-                class="text-xs bg-indigo-950 text-indigo-300 border border-indigo-800 px-3 py-1 rounded-full font-mono">Status:
-                Focused</span>
+        <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+            <h1 class="text-xl font-bold tracking-wider text-indigo-400">⚡ GATE CS MASTER TRACKER</h1>
+            <span class="text-xs bg-indigo-950 text-indigo-300 border border-indigo-800 px-3 py-1 rounded-full font-mono">Status: Execution Mode</span>
         </div>
     </header>
 
-    <main class="max-w-5xl mx-auto px-4 py-8 space-y-8">
-
-        <!-- Countdown Timer Card -->
-        <section
-            class="bg-gradient-to-br from-indigo-900 to-slate-900 border border-indigo-500/30 rounded-2xl p-6 text-center shadow-xl">
-            <h2 class="text-lg font-semibold uppercase tracking-widest text-indigo-200 mb-4">Countdown to Next GATE Exam
-            </h2>
-            <div class="grid grid-cols-4 gap-2 max-w-md mx-auto font-mono text-center">
-                <div class="bg-gray-950/60 p-3 rounded-lg border border-gray-800">
-                    <div id="days" class="text-3xl md:text-4xl font-extrabold text-white">00</div>
-                    <div class="text-[10px] text-gray-400 uppercase mt-1">Days</div>
-                </div>
-                <div class="bg-gray-950/60 p-3 rounded-lg border border-gray-800">
-                    <div id="hours" class="text-3xl md:text-4xl font-extrabold text-white">00</div>
-                    <div class="text-[10px] text-gray-400 uppercase mt-1">Hours</div>
-                </div>
-                <div class="bg-gray-950/60 p-3 rounded-lg border border-gray-800">
-                    <div id="minutes" class="text-3xl md:text-4xl font-extrabold text-white">00</div>
-                    <div class="text-[10px] text-gray-400 uppercase mt-1">Mins</div>
-                </div>
-                <div class="bg-gray-950/60 p-3 rounded-lg border border-gray-800">
-                    <div id="seconds" class="text-3xl md:text-4xl font-extrabold text-emerald-400">00</div>
-                    <div class="text-[10px] text-gray-400 uppercase mt-1">Secs</div>
-                </div>
-            </div>
-        </section>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <!-- Left 2 Columns: Daily Log & Checklist -->
-            <div class="md:col-span-2 space-y-8">
-
-                <!-- Daily Study Tracker -->
+    <main class="max-w-7xl mx-auto px-4 py-8">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+            
+            <!-- LEFT COLUMN: Full GATE Syllabus Checklist (Takes 2/3 Space) -->
+            <div class="lg:col-span-2 space-y-6">
                 <section class="bg-gray-950 border border-gray-800 rounded-2xl p-6">
-                    <h2 class="text-xl font-bold text-white mb-4 flex items-center gap-2">
-                        <span>📅</span> Daily Study Hours Log
-                    </h2>
-                    <form id="study-form" class="flex flex-col sm:flex-row gap-3 mb-6">
-                        <input type="date" id="study-date" required
-                            class="bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-500 flex-1 text-white">
-                        <input type="number" id="study-hours" step="0.5" min="0" max="24" placeholder="Hours (e.g. 6.5)"
-                            required
-                            class="bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-500 w-full sm:w-36 text-white">
-                        <button type="submit"
-                            class="bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-semibold px-5 py-2 rounded-lg transition-colors cursor-pointer">Log
-                            Hours</button>
-                    </form>
+                    <div class="flex justify-between items-center mb-2">
+                        <h2 class="text-xl font-bold text-white flex items-center gap-2">
+                            <span>✅</span> Complete Syllabus Checklist
+                        </h2>
+                        <span id="stat-syllabus-progress" class="text-2xl font-extrabold text-indigo-400 font-mono">0%</span>
+                    </div>
+                    
+                    <!-- Progress Bar -->
+                    <div class="w-full bg-gray-800 rounded-full h-2 mb-6">
+                        <div id="progress-bar-fill" class="bg-indigo-500 h-2 rounded-full transition-all duration-500" style="width: 0%"></div>
+                    </div>
+                    
+                    <div class="space-y-4" id="checklist-container">
+                        
+                        <!-- 1. Engineering Mathematics -->
+                        <div class="border border-gray-800 rounded-xl p-4 bg-gray-900/20">
+                            <h3 class="text-sm font-bold text-indigo-400 uppercase tracking-wider mb-2">1. Engineering Mathematics & Discrete Math</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
+                                <label class="flex items-center gap-2 cursor-pointer p-1"><input type="checkbox" data-id="em-dm" class="accent-indigo-500 rounded text-gray-200"> Discrete Math (Logic, Sets, Relations, Combinatorics, Graphs)</label>
+                                <label class="flex items-center gap-2 cursor-pointer p-1"><input type="checkbox" data-id="em-la" class="accent-indigo-500 rounded text-gray-200"> Linear Algebra (Matrices, Determinants, Eigenvalues)</label>
+                                <label class="flex items-center gap-2 cursor-pointer p-1"><input type="checkbox" data-id="em-cl" class="accent-indigo-500 rounded text-gray-200"> Calculus (Limits, Continuity, Derivatives, Integration)</label>
+                                <label class="flex items-center gap-2 cursor-pointer p-1"><input type="checkbox" data-id="em-pr" class="accent-indigo-500 rounded text-gray-200"> Probability & Statistics (Random Variables, Distributions)</label>
+                            </div>
+                        </div>
 
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-left text-sm">
+                        <!-- 2. Digital Logic -->
+                        <div class="border border-gray-800 rounded-xl p-4 bg-gray-900/20">
+                            <h3 class="text-sm font-bold text-indigo-400 uppercase tracking-wider mb-2">2. Digital Logic</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
+                                <label class="flex items-center gap-2 cursor-pointer p-1"><input type="checkbox" data-id="dl-bool" class="accent-indigo-500 rounded text-gray-200"> Boolean Algebra & K-Maps</label>
+                                <label class="flex items-center gap-2 cursor-pointer p-1"><input type="checkbox" data-id="dl-comb" class="accent-indigo-500 rounded text-gray-200"> Combinational Circuits (Mux, Decoders, Adders)</label>
+                                <label class="flex items-center gap-2 cursor-pointer p-1"><input type="checkbox" data-id="dl-seq" class="accent-indigo-500 rounded text-gray-200"> Sequential Circuits (Flip-Flops, Counters, Registers)</label>
+                                <label class="flex items-center gap-2 cursor-pointer p-1"><input type="checkbox" data-id="dl-num" class="accent-indigo-500 rounded text-gray-200"> Number Representations & Fixed/Floating Point</label>
+                            </div>
+                        </div>
+
+                        <!-- 3. Computer Organization and Architecture (COA) -->
+                        <div class="border border-gray-800 rounded-xl p-4 bg-gray-900/20">
+                            <h3 class="text-sm font-bold text-indigo-400 uppercase tracking-wider mb-2">3. Computer Organization & Architecture</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
+                                <label class="flex items-center gap-2 cursor-pointer p-1"><input type="checkbox" data-id="coa-instr" class="accent-indigo-500 rounded text-gray-200"> Machine Instructions & Addressing Modes</label>
+                                <label class="flex items-center gap-2 cursor-pointer p-1"><input type="checkbox" data-id="coa-pipe" class="accent-indigo-500 rounded text-gray-200"> ALU, Data Path & Pipelining (Hazards)</label>
+                                <label class="flex items-center gap-2 cursor-pointer p-1"><input type="checkbox" data-id="coa-mem" class="accent-indigo-500 rounded text-gray-200"> Memory Hierarchy (Cache Mapping, Main Memory)</label>
+                                <label class="flex items-center gap-2 cursor-pointer p-1"><input type="checkbox" data-id="coa-io" class="accent-indigo-500 rounded text-gray-200"> I/O Interface (Interrupts, Direct Memory Access)</label>
+                            </div>
+                        </div>
+
+                        <!-- 4. Programming and Data Structures -->
+                        <div class="border border-gray-800 rounded-xl p-4 bg-gray-900/20">
+                            <h3 class="text-sm font-bold text-indigo-400 uppercase tracking-wider mb-2">4. Programming & Data Structures</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
+                                <label class="flex items-center gap-2 cursor-pointer p-1"><input type="checkbox" data-id="ds-c" class="accent-indigo-500 rounded text-gray-200"> Programming in C (Pointers, Functions, Recursion)</label>
+                                <label class="flex items-center gap-2 cursor-pointer p-1"><input type="checkbox" data-id="ds-linear" class="accent-indigo-500 rounded text-gray-200"> Linear Data Structures (Arrays, Stacks, Queues, Lists)</label>
+                                <label class="flex items-center gap-2 cursor-pointer p-1"><input type="checkbox" data-id="ds-trees" class="accent-indigo-500 rounded text-gray-200"> Trees (Binary Trees, BSTs, AVL Trees)</label>
+                                <label class="flex items-center gap-2 cursor-pointer p-1"><input type="checkbox" data-id="ds-graphs" class="accent-indigo-500 rounded text-gray-200"> Graphs (Representations & Traversals)</label>
+                            </div>
+                        </div>
+
+                        <!-- 5. Algorithms -->
+                        <div class="border border-gray-800 rounded-xl p-4 bg-gray-900/20">
+                            <h3 class="text-sm font-bold text-indigo-400 uppercase tracking-wider mb-2">5. Algorithms</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
+                                <label class="flex items-center gap-2 cursor-pointer p-1"><input type="checkbox" data-id="algo-asymp" class="accent-indigo-500 rounded text-gray-200"> Asymptotic Analysis & Recurrences</label>
+                                <label class="flex items-center gap-2 cursor-pointer p-1"><input type="checkbox" data-id="algo-sort" class="accent-indigo-500 rounded text-gray-200"> Greedy, Divide & Conquer, Dynamic Programming</label>
+                                <label class="flex items-center gap-2 cursor-pointer p-1"><input type="checkbox" data-id="algo-graph" class="accent-indigo-500 rounded text-gray-200"> Graph Algorithms (Shortest Paths, Minimum Spanning Trees)</label>
+                                <label class="flex items-center gap-2 cursor-pointer p-1"><input type="checkbox" data-id="algo-complex" class="accent-indigo-500 rounded text-gray-200"> Sorting/Searching & Matrix Complexity</label>
+                            </div>
+                        </div>
+
+                        <!-- 6. Theory of Computation (TOC) -->
+                        <div class="border border-gray-800 rounded-xl p-4 bg-gray-900/20">
+                            <h3 class="text-sm font-bold text-indigo-400 uppercase tracking-wider mb-2">6. Theory of Computation</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
+                                <label class="flex items-center gap-2 cursor-pointer p-1"><input type="checkbox" data-id="toc-automata" class="accent-indigo-500 rounded text-gray-200"> Regular Languages (DFA, NFA, RegEx)</label>
+                                <label class="flex items-center gap-2 cursor-pointer p-1"><input type="checkbox" data-id="toc-cfg" class="accent-indigo-500 rounded text-gray-200"> Context Free Languages & Pushdown Automata</label>
+                                <label class="flex items-center gap-2 cursor-pointer p-1"><input type="checkbox" data-id="toc-turing" class="accent-indigo-500 rounded text-gray-200"> Turing Machines & Computability</label>
+                                <label class="flex items-center gap-2 cursor-pointer p-1"><input type="checkbox" data-id="toc-decide" class="accent-indigo-500 rounded text-gray-200"> Decidability & Undecidability</label>
+                            </div>
+                        </div>
+
+                        <!-- 7. Compiler Design -->
+                        <div class="border border-gray-800 rounded-xl p-4 bg-gray-900/20">
+                            <h3 class="text-sm font-bold text-indigo-400 uppercase tracking-wider mb-2">7. Compiler Design</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
+                                <label class="flex items-center gap-2 cursor-pointer p-1"><input type="checkbox" data-id="cd-lex" class="accent-indigo-500 rounded text-gray-200"> Lexical Analysis & Parsing (LL, LR, LALR)</label>
+                                <label class="flex items-center gap-2 cursor-pointer p-1"><input type="checkbox" data-id="cd-sdt" class="accent-indigo-500 rounded text-gray-200"> Syntax Directed Translation & Intermediate Code</label>
+                                <label class="flex items-center gap-2 cursor-pointer p-1"><input type="checkbox" data-id="cd-run" class="accent-indigo-500 rounded text-gray-200"> Runtime Environments & Storage Allocation</label>
+                                <label class="flex items-center gap-2 cursor-pointer p-1"><input type="checkbox" data-id="cd-opt" class="accent-indigo-500 rounded text-gray-200"> Code Optimization & Code Generation</label>
+                            </div>
+                        </div>
+
+                        <!-- 8. Operating Systems (OS) -->
+                        <div class="border border-gray-800 rounded-xl p-4 bg-gray-900/20">
+                            <h3 class="text-sm font-bold text-indigo-400 uppercase tracking-wider mb-2">8. Operating Systems</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
+                                <label class="flex items-center gap-2 cursor-pointer p-1"><input type="checkbox" data-id="os-proc" class="accent-indigo-500 rounded text-gray-200"> System Calls, Processes, Threads & CPU Scheduling</label>
+                                <label class="flex items-center gap-2 cursor-pointer p-1"><input type="checkbox" data-id="os-sync" class="accent-indigo-500 rounded text-gray-200"> Concurrency (Semaphores, Synchronization, Deadlocks)</label>
+                                <label class="flex items-center gap-2 cursor-pointer p-1"><input type="checkbox" data-id="os-mem" class="accent-indigo-500 rounded text-gray-200"> Memory Management & Virtual Memory (Paging)</label>
+                                <label class="flex items-center gap-2 cursor-pointer p-1"><input type="checkbox" data-id="os-fs" class="accent-indigo-500 rounded text-gray-200"> File Systems & Disk Scheduling Algorithms</label>
+                            </div>
+                        </div>
+
+                        <!-- 9. Databases (DBMS) -->
+                        <div class="border border-gray-800 rounded-xl p-4 bg-gray-900/20">
+                            <h3 class="text-sm font-bold text-indigo-400 uppercase tracking-wider mb-2">9. Databases (DBMS)</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
+                                <label class="flex items-center gap-2 cursor-pointer p-1"><input type="checkbox" data-id="db-er" class="accent-indigo-500 rounded text-gray-200"> ER Model & Relational Model</label>
+                                <label class="flex items-center gap-2 cursor-pointer p-1"><input type="checkbox" data-id="db-query" class="accent-indigo-500 rounded text-gray-200"> Relational Algebra, Calculus, and SQL Queries</label>
+                                <label class="flex items-center gap-2 cursor-pointer p-1"><input type="checkbox" data-id="db-norm" class="accent-indigo-500 rounded text-gray-200"> Database Design (Integrity Constraints & Normalization)</label>
+                                <label class="flex items-center gap-2 cursor-pointer p-1"><input type="checkbox" data-id="db-trans" class="accent-indigo-500 rounded text-gray-200"> Transactions, Concurrency Control & Recovery</label>
+                            </div>
+                        </div>
+
+                        <!-- 10. Computer Networks (CN) -->
+                        <div class="border border-gray-800 rounded-xl p-4 bg-gray-900/20">
+                            <h3 class="text-sm font-bold text-indigo-400 uppercase tracking-wider mb-2">10. Computer Networks</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
+                                <label class="flex items-center gap-2 cursor-pointer p-1"><input type="checkbox" data-id="cn-layer" class="accent-indigo-500 rounded text-gray-200"> OSI/TCP-IP Concept & Data Link Layer (Framing, Flow)</label>
+                                <label class="flex items-center gap-2 cursor-pointer p-1"><input type="checkbox" data-id="cn-route" class="accent-indigo-500 rounded text-gray-200"> Routing, IPv4/IPv6, Subnetting & CIDR Calculation</label>
+                                <label class="flex items-center gap-2 cursor-pointer p-1"><input type="checkbox" data-id="cn-trans" class="accent-indigo-500 rounded text-gray-200"> Transport Layer (TCP congestion control, UDP, Sockets)</label>
+                                <label class="flex items-center gap-2 cursor-pointer p-1"><input type="checkbox" data-id="cn-appl" class="accent-indigo-500 rounded text-gray-200"> Application Protocols (DNS, SMTP, HTTP, POP3, FTP)</label>
+                            </div>
+                        </div>
+
+                        <!-- General Aptitude Extension -->
+                        <div class="border border-gray-800 rounded-xl p-4 bg-gray-900/20">
+                            <h3 class="text-sm font-bold text-emerald-400 uppercase tracking-wider mb-2">Bonus: General Aptitude</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
+                                <label class="flex items-center gap-2 cursor-pointer p-1"><input type="checkbox" data-id="ga-verb" class="accent-emerald-500 rounded text-gray-200"> Verbal Aptitude & Reading Comprehension</label>
+                                <label class="flex items-center gap-2 cursor-pointer p-1"><input type="checkbox" data-id="ga-quant" class="accent-emerald-500 rounded text-gray-200"> Quantitative, Spatial, & Analytical Reasoning</label>
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+            </div>
+
+            <!-- RIGHT COLUMN: Countdown and Study Logger Widgets (Sticky 1/3 Space) -->
+            <div class="space-y-6 lg:sticky lg:top-24">
+                
+                <!-- Countdown Timer Card -->
+                <section class="bg-gradient-to-br from-indigo-950 to-slate-900 border border-indigo-500/30 rounded-2xl p-5 text-center shadow-xl">
+                    <h2 class="text-xs font-semibold uppercase tracking-widest text-indigo-300 mb-3">Countdown to Next GATE</h2>
+                    <div class="grid grid-cols-4 gap-1.5 font-mono text-center">
+                        <div class="bg-gray-950/80 p-2 rounded-lg border border-gray-800">
+                            <div id="days" class="text-2xl font-extrabold text-white">00</div>
+                            <div class="text-[9px] text-gray-400 uppercase mt-0.5">Days</div>
+                        </div>
+                        <div class="bg-gray-950/80 p-2 rounded-lg border border-gray-800">
+                            <div id="hours" class="text-2xl font-extrabold text-white">00</div>
+                            <div class="text-[9px] text-gray-400 uppercase mt-0.5">Hours</div>
+                        </div>
+                        <div class="bg-gray-950/80 p-2 rounded-lg border border-gray-800">
+                            <div id="minutes" class="text-2xl font-extrabold text-white">00</div>
+                            <div class="text-[9px] text-gray-400 uppercase mt-0.5">Mins</div>
+                        </div>
+                        <div class="bg-gray-950/80 p-2 rounded-lg border border-gray-800">
+                            <div id="seconds" class="text-2xl font-extrabold text-emerald-400">00</div>
+                            <div class="text-[9px] text-gray-400 uppercase mt-0.5">Secs</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Stat Overview Box -->
+                <section class="bg-gray-950 border border-gray-800 rounded-2xl p-5">
+                    <div class="bg-gray-900 p-4 rounded-xl border border-gray-800">
+                        <div class="text-xs text-gray-400 uppercase font-medium">Total Focus Hours Invested</div>
+                        <div id="stat-total-hours" class="text-3xl font-extrabold text-white mt-1">0 hrs</div>
+                    </div>
+                </section>
+
+                <!-- Daily Log Tracker Form -->
+                <section class="bg-gray-950 border border-gray-800 rounded-2xl p-5">
+                    <h2 class="text-md font-bold text-white mb-3 flex items-center gap-2">
+                        <span>📅</span> Log Daily Hours
+                    </h2>
+                    <form id="study-form" class="space-y-3 mb-4">
+                        <input type="date" id="study-date" required class="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-500 text-white">
+                        <input type="number" id="study-hours" step="0.5" min="0" max="24" placeholder="Hours studied (e.g. 5.5)" required class="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-500 text-white">
+                        <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-semibold py-2 rounded-lg transition-colors cursor-pointer">Add to Dashboard</button>
+                    </form>
+                    
+                    <div class="max-h-48 overflow-y-auto pr-1">
+                        <table class="w-full text-left text-xs">
                             <thead>
-                                <tr class="border-b border-gray-800 text-gray-400">
-                                    <th class="pb-2 font-medium">Date</th>
-                                    <th class="pb-2 font-medium text-right">Hours Invested</th>
+                                <tr class="border-b border-gray-800 text-gray-400 sticky top-0 bg-gray-950 pb-1">
+                                    <th class="pb-1 font-medium">Date</th>
+                                    <th class="pb-1 font-medium text-right">Time</th>
                                 </tr>
                             </thead>
                             <tbody id="hours-table-body" class="divide-y divide-gray-800/50">
-                                <!-- Log rows dynamically injected here -->
+                                <!-- JS injected data logs -->
                             </tbody>
                         </table>
                     </div>
                 </section>
 
-                <!-- Syllabus Checklist -->
-                <section class="bg-gray-950 border border-gray-800 rounded-2xl p-6">
-                    <h2 class="text-xl font-bold text-white mb-2 flex items-center gap-2">
-                        <span>✅</span> Syllabus Checklist
-                    </h2>
-                    <p class="text-xs text-gray-400 mb-4">Progress saves automatically to your browser.</p>
-
-                    <div class="space-y-4" id="checklist-container">
-                        <!-- Group 1 -->
-                        <div class="border border-gray-800 rounded-xl p-4 bg-gray-900/30">
-                            <h3 class="text-sm font-bold text-indigo-400 uppercase tracking-wider mb-3">Core Technical
-                                Topics</h3>
-                            <div class="space-y-2.5">
-                                <label class="flex items-start gap-3 cursor-pointer text-sm py-1">
-                                    <input type="checkbox" data-id="ds" class="mt-1 accent-indigo-500 rounded">
-                                    <div><span class="font-medium text-gray-200">Data Structures & Algorithms</span>
-                                        <p class="text-xs text-gray-500">Arrays, Stacks, Queues, Linked Lists, Trees,
-                                            Graphs, Sorting & Searching</p>
-                                    </div>
-                                </label>
-                                <label class="flex items-start gap-3 cursor-pointer text-sm py-1">
-                                    <input type="checkbox" data-id="toc" class="mt-1 accent-indigo-500 rounded">
-                                    <div><span class="font-medium text-gray-200">Theory of Computation</span>
-                                        <p class="text-xs text-gray-500">Regular Expressions, DFA, NFA, Context-Free
-                                            Grammars, Turing Machines</p>
-                                    </div>
-                                </label>
-                                <label class="flex items-start gap-3 cursor-pointer text-sm py-1">
-                                    <input type="checkbox" data-id="dbms" class="mt-1 accent-indigo-500 rounded">
-                                    <div><span class="font-medium text-gray-200">Databases (DBMS)</span>
-                                        <p class="text-xs text-gray-500">ER Model, Relational Algebra, SQL,
-                                            Normalization, Transactions & Concurrency</p>
-                                    </div>
-                                </label>
-                                <label class="flex items-start gap-3 cursor-pointer text-sm py-1">
-                                    <input type="checkbox" data-id="os" class="mt-1 accent-indigo-500 rounded">
-                                    <div><span class="font-medium text-gray-200">Operating Systems</span>
-                                        <p class="text-xs text-gray-500">Processes, Threads, CPU Scheduling, Deadlocks,
-                                            Memory Management</p>
-                                    </div>
-                                </label>
-                            </div>
-                        </div>
-
-                        <!-- Group 2 -->
-                        <div class="border border-gray-800 rounded-xl p-4 bg-gray-900/30">
-                            <h3 class="text-sm font-bold text-emerald-400 uppercase tracking-wider mb-3">General & Math
-                            </h3>
-                            <div class="space-y-2.5">
-                                <label class="flex items-center gap-3 cursor-pointer text-sm py-1">
-                                    <input type="checkbox" data-id="em" class="accent-emerald-500 rounded">
-                                    <span class="text-gray-200">Engineering Mathematics & Discrete Math</span>
-                                </label>
-                                <label class="flex items-center gap-3 cursor-pointer text-sm py-1">
-                                    <input type="checkbox" data-id="ga" class="accent-emerald-500 rounded">
-                                    <span class="text-gray-200">General Aptitude & Logical Reasoning</span>
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-            </div>
-
-            <!-- Right 1 Column: Stats Overview -->
-            <div class="space-y-6">
-                <section class="bg-gray-950 border border-gray-800 rounded-2xl p-6 sticky top-24">
-                    <h2 class="text-lg font-bold text-white mb-4">Performance Stats</h2>
-
-                    <div class="space-y-4">
-                        <div class="bg-gray-900 p-4 rounded-xl border border-gray-800">
-                            <div class="text-xs text-gray-400 uppercase font-medium">Total Hours Injected</div>
-                            <div id="stat-total-hours" class="text-3xl font-extrabold text-white mt-1">0 hrs</div>
-                        </div>
-
-                        <div class="bg-gray-900 p-4 rounded-xl border border-gray-800">
-                            <div class="text-xs text-gray-400 uppercase font-medium">Syllabus Covered</div>
-                            <div id="stat-syllabus-progress" class="text-3xl font-extrabold text-white mt-1">0%</div>
-                            <div class="w-full bg-gray-800 rounded-full h-1.5 mt-3">
-                                <div id="progress-bar-fill"
-                                    class="bg-indigo-500 h-1.5 rounded-full transition-all duration-500"
-                                    style="width: 0%"></div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
             </div>
         </div>
     </main>
 
-    <!-- Logic Script -->
+    <!-- JavaScript Execution Logic -->
     <script>
-        // 1. COUNTDOWN TIMER CONFIGURATION
-        // Modify this target date to the next scheduled GATE exam date (Typically early February)
+        // 1. DYNAMIC EXAM COUNTDOWN
+        // Targeted for next primary window (Typical Exam timeframe: Early February)
         const TARGET_DATE = new Date("February 6, 2027 09:00:00").getTime();
 
         function updateCountdown() {
@@ -203,11 +255,10 @@
         setInterval(updateCountdown, 1000);
         updateCountdown();
 
-        // 2. DATA STORAGE MANAGEMENT (LocalStorage local saving mechanism)
-        let studyLogs = JSON.parse(localStorage.getItem('gate_study_logs')) || [];
-        let checkedItems = JSON.parse(localStorage.getItem('gate_checked_items')) || [];
+        // 2. DATA PERSISTENCE LAYER (LocalStorage Local Saving Sandbox)
+        let studyLogs = JSON.parse(localStorage.getItem('gate_master_logs')) || [];
+        let checkedItems = JSON.parse(localStorage.getItem('gate_master_checked')) || [];
 
-        // DOM elements
         const studyForm = document.getElementById('study-form');
         const hoursTableBody = document.getElementById('hours-table-body');
         const statTotalHours = document.getElementById('stat-total-hours');
@@ -215,27 +266,23 @@
         const progressBarFill = document.getElementById('progress-bar-fill');
         const checkboxes = document.querySelectorAll('#checklist-container input[type="checkbox"]');
 
-        // Set Default Date in form input to today
         document.getElementById('study-date').valueAsDate = new Date();
 
         function renderLogs() {
             hoursTableBody.innerHTML = '';
             let totalHours = 0;
-
-            // Sort logs by date descending
             studyLogs.sort((a, b) => new Date(b.date) - new Date(a.date));
 
             studyLogs.forEach(log => {
                 totalHours += parseFloat(log.hours);
                 const row = document.createElement('tr');
-                row.className = "text-gray-300";
+                row.className = "text-gray-400 border-b border-gray-900/40";
                 row.innerHTML = `
-                    <td class="py-3 font-mono">${new Date(log.date).toLocaleDateString('en-IN', { day: 'numeric', month: 'short', year: 'numeric' })}</td>
-                    <td class="py-3 text-right font-semibold text-white">${log.hours} hrs</td>
+                    <td class="py-2 font-mono">${new Date(log.date).toLocaleDateString('en-IN', {day: 'numeric', month: 'short'})}</td>
+                    <td class="py-2 text-right font-semibold text-white">${log.hours} hrs</td>
                 `;
                 hoursTableBody.appendChild(row);
             });
-
             statTotalHours.innerText = `${totalHours} hrs`;
         }
 
@@ -245,28 +292,24 @@
             const hours = document.getElementById('study-hours').value;
 
             studyLogs.push({ date, hours });
-            localStorage.setItem('gate_study_logs', JSON.stringify(studyLogs));
-
+            localStorage.setItem('gate_master_logs', JSON.stringify(studyLogs));
             renderLogs();
-            document.getElementById('study-hours').value = ''; // Reset input field
+            document.getElementById('study-hours').value = '';
         });
 
-        // 3. CHECKLIST SYLLABUS MANAGEMENT
+        // 3. COMPLETE RE-CALCULATION SYSTEM FOR CHECKLISTS
         function updateSyllabusStats() {
             const totalItems = checkboxes.length;
             const currentCheckedCount = document.querySelectorAll('#checklist-container input[type="checkbox"]:checked').length;
             const percentage = totalItems > 0 ? Math.round((currentCheckedCount / totalItems) * 100) : 0;
-
+            
             statSyllabusProgress.innerText = `${percentage}%`;
             progressBarFill.style.width = `${percentage}%`;
         }
 
-        // Initialize checkboxes states from LocalStorage
         checkboxes.forEach(box => {
             const id = box.getAttribute('data-id');
-            if (checkedItems.includes(id)) {
-                box.checked = true;
-            }
+            if (checkedItems.includes(id)) box.checked = true;
 
             box.addEventListener('change', () => {
                 const currentId = box.getAttribute('data-id');
@@ -275,15 +318,14 @@
                 } else {
                     checkedItems = checkedItems.filter(item => item !== currentId);
                 }
-                localStorage.setItem('gate_checked_items', JSON.stringify(checkedItems));
+                localStorage.setItem('gate_master_checked', JSON.stringify(checkedItems));
                 updateSyllabusStats();
             });
         });
 
-        // Initial Runs on Page Load
+        // Bootstrap Initial UI states
         renderLogs();
         updateSyllabusStats();
     </script>
 </body>
-
 </html>
