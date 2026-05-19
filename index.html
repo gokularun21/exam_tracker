@@ -4,155 +4,236 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GATE CS Complete Tracker</title>
-    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <style>
+        /* Smooth transition style for dropdown expanding */
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+        .accordion-active .accordion-content {
+            max-height: 1000px;
+            transition: max-height 0.5s ease-in;
+        }
+        .rotate-icon {
+            transition: transform 0.3s ease;
+        }
+        .accordion-active .rotate-icon {
+            transform: rotate(180deg);
+        }
+    </style>
 </head>
 <body class="bg-gray-900 text-gray-100 font-sans min-h-screen">
 
-    <!-- Navbar -->
     <header class="border-b border-gray-800 bg-gray-900/50 backdrop-blur sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
             <h1 class="text-xl font-bold tracking-wider text-indigo-400">⚡ GATE CS MASTER TRACKER</h1>
-            <span class="text-xs bg-indigo-950 text-indigo-300 border border-indigo-800 px-3 py-1 rounded-full font-mono">Status: Execution Mode</span>
+            <span class="text-xs bg-indigo-950 text-indigo-300 border border-indigo-800 px-3 py-1 rounded-full font-mono">Status: Interactive Preparation</span>
         </div>
     </header>
 
     <main class="max-w-7xl mx-auto px-4 py-8">
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
             
-            <!-- LEFT COLUMN: Full GATE Syllabus Checklist (Takes 2/3 Space) -->
             <div class="lg:col-span-2 space-y-6">
                 <section class="bg-gray-950 border border-gray-800 rounded-2xl p-6">
                     <div class="flex justify-between items-center mb-2">
                         <h2 class="text-xl font-bold text-white flex items-center gap-2">
-                            <span>✅</span> Complete Syllabus Checklist
+                            <span>✅</span> Official IIT Syllabus Checklist
                         </h2>
                         <span id="stat-syllabus-progress" class="text-2xl font-extrabold text-indigo-400 font-mono">0%</span>
                     </div>
                     
-                    <!-- Progress Bar -->
                     <div class="w-full bg-gray-800 rounded-full h-2 mb-6">
                         <div id="progress-bar-fill" class="bg-indigo-500 h-2 rounded-full transition-all duration-500" style="width: 0%"></div>
                     </div>
                     
-                    <div class="space-y-4" id="checklist-container">
+                    <div class="space-y-3" id="checklist-container">
                         
-                        <!-- 1. Engineering Mathematics -->
-                        <div class="border border-gray-800 rounded-xl p-4 bg-gray-900/20">
-                            <h3 class="text-sm font-bold text-indigo-400 uppercase tracking-wider mb-2">1. Engineering Mathematics & Discrete Math</h3>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
-                                <label class="flex items-center gap-2 cursor-pointer p-1"><input type="checkbox" data-id="em-dm" class="accent-indigo-500 rounded text-gray-200"> Discrete Math (Logic, Sets, Relations, Combinatorics, Graphs)</label>
-                                <label class="flex items-center gap-2 cursor-pointer p-1"><input type="checkbox" data-id="em-la" class="accent-indigo-500 rounded text-gray-200"> Linear Algebra (Matrices, Determinants, Eigenvalues)</label>
-                                <label class="flex items-center gap-2 cursor-pointer p-1"><input type="checkbox" data-id="em-cl" class="accent-indigo-500 rounded text-gray-200"> Calculus (Limits, Continuity, Derivatives, Integration)</label>
-                                <label class="flex items-center gap-2 cursor-pointer p-1"><input type="checkbox" data-id="em-pr" class="accent-indigo-500 rounded text-gray-200"> Probability & Statistics (Random Variables, Distributions)</label>
+                        <div class="accordion-item border border-gray-800 rounded-xl bg-gray-900/10 overflow-hidden">
+                            <button class="accordion-header w-full flex justify-between items-center p-4 bg-gray-900/40 hover:bg-gray-900/60 transition-colors text-left font-semibold text-indigo-400 text-sm tracking-wide cursor-pointer uppercase">
+                                <span>1. Engineering Mathematics & Discrete Math</span>
+                                <svg class="rotate-icon w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                            </button>
+                            <div class="accordion-content">
+                                <div class="p-4 grid grid-cols-1 md:grid-cols-2 gap-3 text-xs text-gray-300 border-t border-gray-800 bg-gray-950/40">
+                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="em-1" class="mt-0.5 accent-indigo-500 rounded"> Propositional and first-order logic</label>
+                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="em-2" class="mt-0.5 accent-indigo-500 rounded"> Sets, relations, functions, partial orders & lattices</label>
+                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="em-3" class="mt-0.5 accent-indigo-500 rounded"> Monoids & Groups</label>
+                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="em-4" class="mt-0.5 accent-indigo-500 rounded"> Graphs: connectivity, matching, colouring</label>
+                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="em-5" class="mt-0.5 accent-indigo-500 rounded"> Combinatorics: counting, recurrence relations, generating functions</label>
+                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="em-6" class="mt-0.5 accent-indigo-500 rounded"> Linear Algebra: Matrices, determinants, system of linear equations</label>
+                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="em-7" class="mt-0.5 accent-indigo-500 rounded"> Eigenvalues/eigenvectors & LU decomposition</label>
+                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="em-8" class="mt-0.5 accent-indigo-500 rounded"> Calculus: Limits, continuity, differentiability, maxima/minima, mean value theorem, integration</label>
+                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="em-9" class="mt-0.5 accent-indigo-500 rounded"> Probability: Random variables (Uniform, normal, exponential, Poisson, binomial)</label>
+                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="em-10" class="mt-0.5 accent-indigo-500 rounded"> Mean, median, mode, std deviation, conditional probability & Bayes theorem</label>
+                                </div>
                             </div>
                         </div>
 
-                        <!-- 2. Digital Logic -->
-                        <div class="border border-gray-800 rounded-xl p-4 bg-gray-900/20">
-                            <h3 class="text-sm font-bold text-indigo-400 uppercase tracking-wider mb-2">2. Digital Logic</h3>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
-                                <label class="flex items-center gap-2 cursor-pointer p-1"><input type="checkbox" data-id="dl-bool" class="accent-indigo-500 rounded text-gray-200"> Boolean Algebra & K-Maps</label>
-                                <label class="flex items-center gap-2 cursor-pointer p-1"><input type="checkbox" data-id="dl-comb" class="accent-indigo-500 rounded text-gray-200"> Combinational Circuits (Mux, Decoders, Adders)</label>
-                                <label class="flex items-center gap-2 cursor-pointer p-1"><input type="checkbox" data-id="dl-seq" class="accent-indigo-500 rounded text-gray-200"> Sequential Circuits (Flip-Flops, Counters, Registers)</label>
-                                <label class="flex items-center gap-2 cursor-pointer p-1"><input type="checkbox" data-id="dl-num" class="accent-indigo-500 rounded text-gray-200"> Number Representations & Fixed/Floating Point</label>
+                        <div class="accordion-item border border-gray-800 rounded-xl bg-gray-900/10 overflow-hidden">
+                            <button class="accordion-header w-full flex justify-between items-center p-4 bg-gray-900/40 hover:bg-gray-900/60 transition-colors text-left font-semibold text-indigo-400 text-sm tracking-wide cursor-pointer uppercase">
+                                <span>2. Digital Logic</span>
+                                <svg class="rotate-icon w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                            </button>
+                            <div class="accordion-content">
+                                <div class="p-4 grid grid-cols-1 md:grid-cols-2 gap-3 text-xs text-gray-300 border-t border-gray-800 bg-gray-950/40">
+                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="dl-1" class="mt-0.5 accent-indigo-500 rounded"> Boolean algebra</label>
+                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="dl-2" class="mt-0.5 accent-indigo-500 rounded"> Minimization of functions</label>
+                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="dl-3" class="mt-0.5 accent-indigo-500 rounded"> Combinational circuits</label>
+                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="dl-4" class="mt-0.5 accent-indigo-500 rounded"> Sequential circuits</label>
+                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="dl-5" class="mt-0.5 accent-indigo-500 rounded"> Number representations & computer arithmetic (fixed & floating point)</label>
+                                </div>
                             </div>
                         </div>
 
-                        <!-- 3. Computer Organization and Architecture (COA) -->
-                        <div class="border border-gray-800 rounded-xl p-4 bg-gray-900/20">
-                            <h3 class="text-sm font-bold text-indigo-400 uppercase tracking-wider mb-2">3. Computer Organization & Architecture</h3>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
-                                <label class="flex items-center gap-2 cursor-pointer p-1"><input type="checkbox" data-id="coa-instr" class="accent-indigo-500 rounded text-gray-200"> Machine Instructions & Addressing Modes</label>
-                                <label class="flex items-center gap-2 cursor-pointer p-1"><input type="checkbox" data-id="coa-pipe" class="accent-indigo-500 rounded text-gray-200"> ALU, Data Path & Pipelining (Hazards)</label>
-                                <label class="flex items-center gap-2 cursor-pointer p-1"><input type="checkbox" data-id="coa-mem" class="accent-indigo-500 rounded text-gray-200"> Memory Hierarchy (Cache Mapping, Main Memory)</label>
-                                <label class="flex items-center gap-2 cursor-pointer p-1"><input type="checkbox" data-id="coa-io" class="accent-indigo-500 rounded text-gray-200"> I/O Interface (Interrupts, Direct Memory Access)</label>
+                        <div class="accordion-item border border-gray-800 rounded-xl bg-gray-900/10 overflow-hidden">
+                            <button class="accordion-header w-full flex justify-between items-center p-4 bg-gray-900/40 hover:bg-gray-900/60 transition-colors text-left font-semibold text-indigo-400 text-sm tracking-wide cursor-pointer uppercase">
+                                <span>3. Computer Organization and Architecture</span>
+                                <svg class="rotate-icon w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                            </button>
+                            <div class="accordion-content">
+                                <div class="p-4 grid grid-cols-1 md:grid-cols-2 gap-3 text-xs text-gray-300 border-t border-gray-800 bg-gray-950/40">
+                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="coa-1" class="mt-0.5 accent-indigo-500 rounded"> Machine instructions and addressing modes</label>
+                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="coa-2" class="mt-0.5 accent-indigo-500 rounded"> ALU, data path and control unit</label>
+                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="coa-3" class="mt-0.5 accent-indigo-500 rounded"> Instruction pipelining and Pipeline hazards</label>
+                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="coa-4" class="mt-0.5 accent-indigo-500 rounded"> Memory hierarchy: cache, main memory and secondary storage</label>
+                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="coa-5" class="mt-0.5 accent-indigo-500 rounded"> I/O interface (interrupt and DMA mode)</label>
+                                </div>
                             </div>
                         </div>
 
-                        <!-- 4. Programming and Data Structures -->
-                        <div class="border border-gray-800 rounded-xl p-4 bg-gray-900/20">
-                            <h3 class="text-sm font-bold text-indigo-400 uppercase tracking-wider mb-2">4. Programming & Data Structures</h3>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
-                                <label class="flex items-center gap-2 cursor-pointer p-1"><input type="checkbox" data-id="ds-c" class="accent-indigo-500 rounded text-gray-200"> Programming in C (Pointers, Functions, Recursion)</label>
-                                <label class="flex items-center gap-2 cursor-pointer p-1"><input type="checkbox" data-id="ds-linear" class="accent-indigo-500 rounded text-gray-200"> Linear Data Structures (Arrays, Stacks, Queues, Lists)</label>
-                                <label class="flex items-center gap-2 cursor-pointer p-1"><input type="checkbox" data-id="ds-trees" class="accent-indigo-500 rounded text-gray-200"> Trees (Binary Trees, BSTs, AVL Trees)</label>
-                                <label class="flex items-center gap-2 cursor-pointer p-1"><input type="checkbox" data-id="ds-graphs" class="accent-indigo-500 rounded text-gray-200"> Graphs (Representations & Traversals)</label>
+                        <div class="accordion-item border border-gray-800 rounded-xl bg-gray-900/10 overflow-hidden">
+                            <button class="accordion-header w-full flex justify-between items-center p-4 bg-gray-900/40 hover:bg-gray-900/60 transition-colors text-left font-semibold text-indigo-400 text-sm tracking-wide cursor-pointer uppercase">
+                                <span>4. Programming and Data Structures</span>
+                                <svg class="rotate-icon w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                            </button>
+                            <div class="accordion-content">
+                                <div class="p-4 grid grid-cols-1 md:grid-cols-2 gap-3 text-xs text-gray-300 border-t border-gray-800 bg-gray-950/40">
+                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="pds-1" class="mt-0.5 accent-indigo-500 rounded"> Programming in C</label>
+                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="pds-2" class="mt-0.5 accent-indigo-500 rounded"> Recursion</label>
+                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="pds-3" class="mt-0.5 accent-indigo-500 rounded"> Arrays, stacks, queues, linked lists</label>
+                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="pds-4" class="mt-0.5 accent-indigo-500 rounded"> Trees, Binary Search Trees, Binary Heaps</label>
+                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="pds-5" class="mt-0.5 accent-indigo-500 rounded"> Graphs</label>
+                                </div>
                             </div>
                         </div>
 
-                        <!-- 5. Algorithms -->
-                        <div class="border border-gray-800 rounded-xl p-4 bg-gray-900/20">
-                            <h3 class="text-sm font-bold text-indigo-400 uppercase tracking-wider mb-2">5. Algorithms</h3>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
-                                <label class="flex items-center gap-2 cursor-pointer p-1"><input type="checkbox" data-id="algo-asymp" class="accent-indigo-500 rounded text-gray-200"> Asymptotic Analysis & Recurrences</label>
-                                <label class="flex items-center gap-2 cursor-pointer p-1"><input type="checkbox" data-id="algo-sort" class="accent-indigo-500 rounded text-gray-200"> Greedy, Divide & Conquer, Dynamic Programming</label>
-                                <label class="flex items-center gap-2 cursor-pointer p-1"><input type="checkbox" data-id="algo-graph" class="accent-indigo-500 rounded text-gray-200"> Graph Algorithms (Shortest Paths, Minimum Spanning Trees)</label>
-                                <label class="flex items-center gap-2 cursor-pointer p-1"><input type="checkbox" data-id="algo-complex" class="accent-indigo-500 rounded text-gray-200"> Sorting/Searching & Matrix Complexity</label>
+                        <div class="accordion-item border border-gray-800 rounded-xl bg-gray-900/10 overflow-hidden">
+                            <button class="accordion-header w-full flex justify-between items-center p-4 bg-gray-900/40 hover:bg-gray-900/60 transition-colors text-left font-semibold text-indigo-400 text-sm tracking-wide cursor-pointer uppercase">
+                                <span>5. Algorithms</span>
+                                <svg class="rotate-icon w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                            </button>
+                            <div class="accordion-content">
+                                <div class="p-4 grid grid-cols-1 md:grid-cols-2 gap-3 text-xs text-gray-300 border-t border-gray-800 bg-gray-950/40">
+                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="algo-1" class="mt-0.5 accent-indigo-500 rounded"> Searching, sorting, hashing</label>
+                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="algo-2" class="mt-0.5 accent-indigo-500 rounded"> Asymptotic worst case time and space complexity</label>
+                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="algo-3" class="mt-0.5 accent-indigo-500 rounded"> Algorithm design techniques: Greedy method</label>
+                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="algo-4" class="mt-0.5 accent-indigo-500 rounded"> Algorithm design techniques: Dynamic Programming</label>
+                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="algo-5" class="mt-0.5 accent-indigo-500 rounded"> Algorithm design techniques: Divide-and-conquer</label>
+                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="algo-6" class="mt-0.5 accent-indigo-500 rounded"> Graph traversals, minimum spanning trees, shortest paths</label>
+                                </div>
                             </div>
                         </div>
 
-                        <!-- 6. Theory of Computation (TOC) -->
-                        <div class="border border-gray-800 rounded-xl p-4 bg-gray-900/20">
-                            <h3 class="text-sm font-bold text-indigo-400 uppercase tracking-wider mb-2">6. Theory of Computation</h3>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
-                                <label class="flex items-center gap-2 cursor-pointer p-1"><input type="checkbox" data-id="toc-automata" class="accent-indigo-500 rounded text-gray-200"> Regular Languages (DFA, NFA, RegEx)</label>
-                                <label class="flex items-center gap-2 cursor-pointer p-1"><input type="checkbox" data-id="toc-cfg" class="accent-indigo-500 rounded text-gray-200"> Context Free Languages & Pushdown Automata</label>
-                                <label class="flex items-center gap-2 cursor-pointer p-1"><input type="checkbox" data-id="toc-turing" class="accent-indigo-500 rounded text-gray-200"> Turing Machines & Computability</label>
-                                <label class="flex items-center gap-2 cursor-pointer p-1"><input type="checkbox" data-id="toc-decide" class="accent-indigo-500 rounded text-gray-200"> Decidability & Undecidability</label>
+                        <div class="accordion-item border border-gray-800 rounded-xl bg-gray-900/10 overflow-hidden">
+                            <button class="accordion-header w-full flex justify-between items-center p-4 bg-gray-900/40 hover:bg-gray-900/60 transition-colors text-left font-semibold text-indigo-400 text-sm tracking-wide cursor-pointer uppercase">
+                                <span>6. Theory of Computation</span>
+                                <svg class="rotate-icon w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                            </button>
+                            <div class="accordion-content">
+                                <div class="p-4 grid grid-cols-1 md:grid-cols-2 gap-3 text-xs text-gray-300 border-t border-gray-800 bg-gray-950/40">
+                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="toc-1" class="mt-0.5 accent-indigo-500 rounded"> Regular expressions and finite automata</label>
+                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="toc-2" class="mt-0.5 accent-indigo-500 rounded"> Context-free grammars and push-down automata</label>
+                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="toc-3" class="mt-0.5 accent-indigo-500 rounded"> Regular and context-free languages, pumping lemma</label>
+                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="toc-4" class="mt-0.5 accent-indigo-500 rounded"> Turing machines and undecidability</label>
+                                </div>
                             </div>
                         </div>
 
-                        <!-- 7. Compiler Design -->
-                        <div class="border border-gray-800 rounded-xl p-4 bg-gray-900/20">
-                            <h3 class="text-sm font-bold text-indigo-400 uppercase tracking-wider mb-2">7. Compiler Design</h3>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
-                                <label class="flex items-center gap-2 cursor-pointer p-1"><input type="checkbox" data-id="cd-lex" class="accent-indigo-500 rounded text-gray-200"> Lexical Analysis & Parsing (LL, LR, LALR)</label>
-                                <label class="flex items-center gap-2 cursor-pointer p-1"><input type="checkbox" data-id="cd-sdt" class="accent-indigo-500 rounded text-gray-200"> Syntax Directed Translation & Intermediate Code</label>
-                                <label class="flex items-center gap-2 cursor-pointer p-1"><input type="checkbox" data-id="cd-run" class="accent-indigo-500 rounded text-gray-200"> Runtime Environments & Storage Allocation</label>
-                                <label class="flex items-center gap-2 cursor-pointer p-1"><input type="checkbox" data-id="cd-opt" class="accent-indigo-500 rounded text-gray-200"> Code Optimization & Code Generation</label>
+                        <div class="accordion-item border border-gray-800 rounded-xl bg-gray-900/10 overflow-hidden">
+                            <button class="accordion-header w-full flex justify-between items-center p-4 bg-gray-900/40 hover:bg-gray-900/60 transition-colors text-left font-semibold text-indigo-400 text-sm tracking-wide cursor-pointer uppercase">
+                                <span>7. Compiler Design</span>
+                                <svg class="rotate-icon w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                            </button>
+                            <div class="accordion-content">
+                                <div class="p-4 grid grid-cols-1 md:grid-cols-2 gap-3 text-xs text-gray-300 border-t border-gray-800 bg-gray-950/40">
+                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="cd-1" class="mt-0.5 accent-indigo-500 rounded"> Lexical analysis</label>
+                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="cd-2" class="mt-0.5 accent-indigo-500 rounded"> Parsing, Syntax-Directed Translation</label>
+                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="cd-3" class="mt-0.5 accent-indigo-500 rounded"> Runtime environments</label>
+                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="cd-4" class="mt-0.5 accent-indigo-500 rounded"> Intermediate code generation</label>
+                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="cd-5" class="mt-0.5 accent-indigo-500 rounded"> Local optimization</label>
+                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="cd-6" class="mt-0.5 accent-indigo-500 rounded"> Data flow analysis: constant propagation, liveness analysis, common subexpression elimination</label>
+                                </div>
                             </div>
                         </div>
 
-                        <!-- 8. Operating Systems (OS) -->
-                        <div class="border border-gray-800 rounded-xl p-4 bg-gray-900/20">
-                            <h3 class="text-sm font-bold text-indigo-400 uppercase tracking-wider mb-2">8. Operating Systems</h3>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
-                                <label class="flex items-center gap-2 cursor-pointer p-1"><input type="checkbox" data-id="os-proc" class="accent-indigo-500 rounded text-gray-200"> System Calls, Processes, Threads & CPU Scheduling</label>
-                                <label class="flex items-center gap-2 cursor-pointer p-1"><input type="checkbox" data-id="os-sync" class="accent-indigo-500 rounded text-gray-200"> Concurrency (Semaphores, Synchronization, Deadlocks)</label>
-                                <label class="flex items-center gap-2 cursor-pointer p-1"><input type="checkbox" data-id="os-mem" class="accent-indigo-500 rounded text-gray-200"> Memory Management & Virtual Memory (Paging)</label>
-                                <label class="flex items-center gap-2 cursor-pointer p-1"><input type="checkbox" data-id="os-fs" class="accent-indigo-500 rounded text-gray-200"> File Systems & Disk Scheduling Algorithms</label>
+                        <div class="accordion-item border border-gray-800 rounded-xl bg-gray-900/10 overflow-hidden">
+                            <button class="accordion-header w-full flex justify-between items-center p-4 bg-gray-900/40 hover:bg-gray-900/60 transition-colors text-left font-semibold text-indigo-400 text-sm tracking-wide cursor-pointer uppercase">
+                                <span>8. Operating Systems</span>
+                                <svg class="rotate-icon w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                            </button>
+                            <div class="accordion-content">
+                                <div class="p-4 grid grid-cols-1 md:grid-cols-2 gap-3 text-xs text-gray-300 border-t border-gray-800 bg-gray-950/40">
+                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="os-1" class="mt-0.5 accent-indigo-500 rounded"> System calls, processes, threads</label>
+                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="os-2" class="mt-0.5 accent-indigo-500 rounded"> Inter-process communication, concurrency and synchronization</label>
+                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="os-3" class="mt-0.5 accent-indigo-500 rounded"> Deadlock</label>
+                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="os-4" class="mt-0.5 accent-indigo-500 rounded"> CPU and I/O scheduling</label>
+                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="os-5" class="mt-0.5 accent-indigo-500 rounded"> Memory management and virtual memory</label>
+                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="os-6" class="mt-0.5 accent-indigo-500 rounded"> File systems</label>
+                                </div>
                             </div>
                         </div>
 
-                        <!-- 9. Databases (DBMS) -->
-                        <div class="border border-gray-800 rounded-xl p-4 bg-gray-900/20">
-                            <h3 class="text-sm font-bold text-indigo-400 uppercase tracking-wider mb-2">9. Databases (DBMS)</h3>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
-                                <label class="flex items-center gap-2 cursor-pointer p-1"><input type="checkbox" data-id="db-er" class="accent-indigo-500 rounded text-gray-200"> ER Model & Relational Model</label>
-                                <label class="flex items-center gap-2 cursor-pointer p-1"><input type="checkbox" data-id="db-query" class="accent-indigo-500 rounded text-gray-200"> Relational Algebra, Calculus, and SQL Queries</label>
-                                <label class="flex items-center gap-2 cursor-pointer p-1"><input type="checkbox" data-id="db-norm" class="accent-indigo-500 rounded text-gray-200"> Database Design (Integrity Constraints & Normalization)</label>
-                                <label class="flex items-center gap-2 cursor-pointer p-1"><input type="checkbox" data-id="db-trans" class="accent-indigo-500 rounded text-gray-200"> Transactions, Concurrency Control & Recovery</label>
+                        <div class="accordion-item border border-gray-800 rounded-xl bg-gray-900/10 overflow-hidden">
+                            <button class="accordion-header w-full flex justify-between items-center p-4 bg-gray-900/40 hover:bg-gray-900/60 transition-colors text-left font-semibold text-indigo-400 text-sm tracking-wide cursor-pointer uppercase">
+                                <span>9. Databases (DBMS)</span>
+                                <svg class="rotate-icon w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                            </button>
+                            <div class="accordion-content">
+                                <div class="p-4 grid grid-cols-1 md:grid-cols-2 gap-3 text-xs text-gray-300 border-t border-gray-800 bg-gray-950/40">
+                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="db-1" class="mt-0.5 accent-indigo-500 rounded"> ER-model</label>
+                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="db-2" class="mt-0.5 accent-indigo-500 rounded"> Relational model: relational algebra, tuple calculus</label>
+                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="db-3" class="mt-0.5 accent-indigo-500 rounded"> SQL queries</label>
+                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="db-4" class="mt-0.5 accent-indigo-500 rounded"> Integrity constraints, Normal forms</label>
+                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="db-5" class="mt-0.5 accent-indigo-500 rounded"> File organization, Indexing (e.g., B and B+ trees)</label>
+                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="db-6" class="mt-0.5 accent-indigo-500 rounded"> Transactions and concurrency control</label>
+                                </div>
                             </div>
                         </div>
 
-                        <!-- 10. Computer Networks (CN) -->
-                        <div class="border border-gray-800 rounded-xl p-4 bg-gray-900/20">
-                            <h3 class="text-sm font-bold text-indigo-400 uppercase tracking-wider mb-2">10. Computer Networks</h3>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
-                                <label class="flex items-center gap-2 cursor-pointer p-1"><input type="checkbox" data-id="cn-layer" class="accent-indigo-500 rounded text-gray-200"> OSI/TCP-IP Concept & Data Link Layer (Framing, Flow)</label>
-                                <label class="flex items-center gap-2 cursor-pointer p-1"><input type="checkbox" data-id="cn-route" class="accent-indigo-500 rounded text-gray-200"> Routing, IPv4/IPv6, Subnetting & CIDR Calculation</label>
-                                <label class="flex items-center gap-2 cursor-pointer p-1"><input type="checkbox" data-id="cn-trans" class="accent-indigo-500 rounded text-gray-200"> Transport Layer (TCP congestion control, UDP, Sockets)</label>
-                                <label class="flex items-center gap-2 cursor-pointer p-1"><input type="checkbox" data-id="cn-appl" class="accent-indigo-500 rounded text-gray-200"> Application Protocols (DNS, SMTP, HTTP, POP3, FTP)</label>
+                        <div class="accordion-item border border-gray-800 rounded-xl bg-gray-900/10 overflow-hidden">
+                            <button class="accordion-header w-full flex justify-between items-center p-4 bg-gray-900/40 hover:bg-gray-900/60 transition-colors text-left font-semibold text-indigo-400 text-sm tracking-wide cursor-pointer uppercase">
+                                <span>10. Computer Networks</span>
+                                <svg class="rotate-icon w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                            </button>
+                            <div class="accordion-content">
+                                <div class="p-4 grid grid-cols-1 md:grid-cols-2 gap-3 text-xs text-gray-300 border-t border-gray-800 bg-gray-950/40">
+                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="cn-1" class="mt-0.5 accent-indigo-500 rounded"> Concept of Layering: OSI and TCP/IP Protocol Stacks</label>
+                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="cn-2" class="mt-0.5 accent-indigo-500 rounded"> Basics of packet, circuit, and virtual circuit switching</label>
+                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="cn-3" class="mt-0.5 accent-indigo-500 rounded"> Data Link Layer: Framing, error detection, Medium Access Control, Ethernet bridging</label>
+                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="cn-4" class="mt-0.5 accent-indigo-500 rounded"> Routing Protocols: Shortest path, flooding, distance vector & link state routing</label>
+                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="cn-5" class="mt-0.5 accent-indigo-500 rounded"> Fragmentation and IP addressing, IPv4, CIDR notation</label>
+                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="cn-6" class="mt-0.5 accent-indigo-500 rounded"> Basics of IP support protocols (ARP, DHCP, ICMP), NAT</label>
+                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="cn-7" class="mt-0.5 accent-indigo-500 rounded"> Transport Layer: Flow control and congestion control, UDP, TCP, sockets</label>
+                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="cn-8" class="mt-0.5 accent-indigo-500 rounded"> Application Layer Protocols: DNS, SMTP, HTTP, FTP, Email</label>
+                                </div>
                             </div>
                         </div>
 
-                        <!-- General Aptitude Extension -->
-                        <div class="border border-gray-800 rounded-xl p-4 bg-gray-900/20">
-                            <h3 class="text-sm font-bold text-emerald-400 uppercase tracking-wider mb-2">Bonus: General Aptitude</h3>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm">
-                                <label class="flex items-center gap-2 cursor-pointer p-1"><input type="checkbox" data-id="ga-verb" class="accent-emerald-500 rounded text-gray-200"> Verbal Aptitude & Reading Comprehension</label>
-                                <label class="flex items-center gap-2 cursor-pointer p-1"><input type="checkbox" data-id="ga-quant" class="accent-emerald-500 rounded text-gray-200"> Quantitative, Spatial, & Analytical Reasoning</label>
+                        <div class="accordion-item border border-gray-800 rounded-xl bg-gray-900/10 overflow-hidden">
+                            <button class="accordion-header w-full flex justify-between items-center p-4 bg-gray-900/40 hover:bg-gray-900/60 transition-colors text-left font-semibold text-emerald-400 text-sm tracking-wide cursor-pointer uppercase">
+                                <span>General Aptitude</span>
+                                <svg class="rotate-icon w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                            </button>
+                            <div class="accordion-content">
+                                <div class="p-4 grid grid-cols-1 md:grid-cols-2 gap-3 text-xs text-gray-300 border-t border-gray-800 bg-gray-950/40">
+                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="ga-1" class="mt-0.5 accent-emerald-500 rounded"> Verbal Aptitude: Basic English grammar, vocabulary, reading/comprehension, narrative sequencing</label>
+                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="ga-2" class="mt-0.5 accent-emerald-500 rounded"> Quantitative Aptitude: Ratios, percentages, powers, exponents, logarithms, series, permutations/combinations, mensuration, geometry, elementary statistics & probability</label>
+                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="ga-3" class="mt-0.5 accent-emerald-500 rounded"> Analytical Aptitude: Logic, pattern recognition, number/alphanumeric series, syllogisms, analogies</label>
+                                    <label class="flex items-start gap-2 cursor-pointer"><input type="checkbox" data-id="ga-4" class="mt-0.5 accent-emerald-500 rounded"> Spatial Aptitude: Translation, rotation, scaling, mirroring, assembling, grouping, paper folding/cutting</label>
+                                </div>
                             </div>
                         </div>
 
@@ -160,10 +241,8 @@
                 </section>
             </div>
 
-            <!-- RIGHT COLUMN: Countdown and Study Logger Widgets (Sticky 1/3 Space) -->
             <div class="space-y-6 lg:sticky lg:top-24">
                 
-                <!-- Countdown Timer Card -->
                 <section class="bg-gradient-to-br from-indigo-950 to-slate-900 border border-indigo-500/30 rounded-2xl p-5 text-center shadow-xl">
                     <h2 class="text-xs font-semibold uppercase tracking-widest text-indigo-300 mb-3">Countdown to Next GATE</h2>
                     <div class="grid grid-cols-4 gap-1.5 font-mono text-center">
@@ -186,23 +265,21 @@
                     </div>
                 </section>
 
-                <!-- Stat Overview Box -->
                 <section class="bg-gray-950 border border-gray-800 rounded-2xl p-5">
                     <div class="bg-gray-900 p-4 rounded-xl border border-gray-800">
-                        <div class="text-xs text-gray-400 uppercase font-medium">Total Focus Hours Invested</div>
+                        <div class="text-xs text-gray-400 uppercase font-medium">Total Study Hours Invested</div>
                         <div id="stat-total-hours" class="text-3xl font-extrabold text-white mt-1">0 hrs</div>
                     </div>
                 </section>
 
-                <!-- Daily Log Tracker Form -->
                 <section class="bg-gray-950 border border-gray-800 rounded-2xl p-5">
                     <h2 class="text-md font-bold text-white mb-3 flex items-center gap-2">
-                        <span>📅</span> Log Daily Hours
+                        <span>📅</span> Log Study Hours
                     </h2>
                     <form id="study-form" class="space-y-3 mb-4">
                         <input type="date" id="study-date" required class="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-500 text-white">
-                        <input type="number" id="study-hours" step="0.5" min="0" max="24" placeholder="Hours studied (e.g. 5.5)" required class="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-500 text-white">
-                        <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-semibold py-2 rounded-lg transition-colors cursor-pointer">Add to Dashboard</button>
+                        <input type="number" id="study-hours" step="0.5" min="0" max="24" placeholder="Hours studied (e.g. 6.5)" required class="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-indigo-500 text-white">
+                        <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-semibold py-2 rounded-lg transition-colors cursor-pointer">Log Work</button>
                     </form>
                     
                     <div class="max-h-48 overflow-y-auto pr-1">
@@ -214,8 +291,7 @@
                                 </tr>
                             </thead>
                             <tbody id="hours-table-body" class="divide-y divide-gray-800/50">
-                                <!-- JS injected data logs -->
-                            </tbody>
+                                </tbody>
                         </table>
                     </div>
                 </section>
@@ -224,10 +300,9 @@
         </div>
     </main>
 
-    <!-- JavaScript Execution Logic -->
     <script>
-        // 1. DYNAMIC EXAM COUNTDOWN
-        // Targeted for next primary window (Typical Exam timeframe: Early February)
+        // 1. EXAM COUNTDOWN
+        // Configured for typical February exam cycle targeting early Saturday window
         const TARGET_DATE = new Date("February 6, 2027 09:00:00").getTime();
 
         function updateCountdown() {
@@ -255,9 +330,18 @@
         setInterval(updateCountdown, 1000);
         updateCountdown();
 
-        // 2. DATA PERSISTENCE LAYER (LocalStorage Local Saving Sandbox)
-        let studyLogs = JSON.parse(localStorage.getItem('gate_master_logs')) || [];
-        let checkedItems = JSON.parse(localStorage.getItem('gate_master_checked')) || [];
+        // 2. ACCORDION OPEN/CLOSE INTERACTION
+        const accordionHeaders = document.querySelectorAll('.accordion-header');
+        accordionHeaders.forEach(header => {
+            header.addEventListener('click', () => {
+                const item = header.parentElement;
+                item.classList.toggle('accordion-active');
+            });
+        });
+
+        // 3. PERSISTED REPOSITORY STORAGE MANAGEMENT (Local browser sandbox)
+        let studyLogs = JSON.parse(localStorage.getItem('gate_deep_logs')) || [];
+        let checkedItems = JSON.parse(localStorage.getItem('gate_deep_checked')) || [];
 
         const studyForm = document.getElementById('study-form');
         const hoursTableBody = document.getElementById('hours-table-body');
@@ -292,12 +376,12 @@
             const hours = document.getElementById('study-hours').value;
 
             studyLogs.push({ date, hours });
-            localStorage.setItem('gate_master_logs', JSON.stringify(studyLogs));
+            localStorage.setItem('gate_deep_logs', JSON.stringify(studyLogs));
             renderLogs();
             document.getElementById('study-hours').value = '';
         });
 
-        // 3. COMPLETE RE-CALCULATION SYSTEM FOR CHECKLISTS
+        // 4. SYLLABUS CALCULATION LOGIC
         function updateSyllabusStats() {
             const totalItems = checkboxes.length;
             const currentCheckedCount = document.querySelectorAll('#checklist-container input[type="checkbox"]:checked').length;
@@ -318,12 +402,12 @@
                 } else {
                     checkedItems = checkedItems.filter(item => item !== currentId);
                 }
-                localStorage.setItem('gate_master_checked', JSON.stringify(checkedItems));
+                localStorage.setItem('gate_deep_checked', JSON.stringify(checkedItems));
                 updateSyllabusStats();
             });
         });
 
-        // Bootstrap Initial UI states
+        // Bootstrap Initial UI Layout state on render
         renderLogs();
         updateSyllabusStats();
     </script>
