@@ -80,12 +80,22 @@
   }
 
   /* ── Layout ── */
-  main {
+  .dashboard-container {
     position: relative;
     z-index: 1;
     max-width: 1280px;
     margin: 0 auto;
     padding: 32px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  .top-banner-row {
+    width: 100%;
+  }
+
+  .main-split-layout {
     display: grid;
     grid-template-columns: 1fr 340px;
     gap: 28px;
@@ -93,7 +103,7 @@
   }
 
   @media (max-width: 1024px) {
-    main { grid-template-columns: 1fr; }
+    .main-split-layout { grid-template-columns: 1fr; }
   }
 
   /* ── Cards ── */
@@ -117,6 +127,86 @@
   }
 
   .card-title span { font-size: 0.9rem; }
+
+  /* ── Full Width Countdown Banner ── */
+  .countdown-banner {
+    background: linear-gradient(135deg, #0f1f3d 0%, #0b1628 50%, #0d1a2e 100%);
+    border: 1px solid rgba(59,130,246,0.25);
+    border-radius: 16px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+  }
+
+  .countdown-label {
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #6688aa;
+    margin-bottom: 14px;
+    font-weight: 700;
+  }
+
+  .countdown-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    width: 100%;
+    max-w: 600px;
+    margin: 0 auto;
+  }
+
+  .countdown-unit {
+    background: rgba(0,0,0,0.4);
+    border: 1px solid rgba(59,130,246,0.15);
+    border-radius: 12px;
+    padding: 14px 8px;
+  }
+
+  .countdown-val {
+    font-family: var(--mono);
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1;
+  }
+
+  @media (max-width: 600px) {
+    .countdown-val { font-size: 1.5rem; }
+  }
+
+  .countdown-val.secs { color: var(--emerald); }
+
+  .countdown-lbl {
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    color: #4a6a8a;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-top: 6px;
+  }
+
+  .exam-date-note {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    color: #5c7b9c;
+    margin-top: 14px;
+  }
+
+  /* ── Fast Execution Block (Daily Trackers Stacked Below Banner) ── */
+  .execution-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  @media (max-width: 768px) {
+    .execution-row { grid-template-columns: 1fr; }
+  }
 
   /* ── Syllabus Checklist ── */
   .syllabus-header {
@@ -296,65 +386,8 @@
   .topic-label.done { color: #4b6070; }
   .topic-label.done span { text-decoration: line-through; }
 
-  /* ── Right Column ── */
+  /* ── Right Side Components ── */
   .right-col { display: flex; flex-direction: column; gap: 20px; }
-
-  /* ── Countdown ── */
-  .countdown-card {
-    background: linear-gradient(135deg, #0f1f3d 0%, #0b1628 50%, #0d1a2e 100%);
-    border: 1px solid rgba(59,130,246,0.25);
-    border-radius: 16px;
-    padding: 22px;
-    text-align: center;
-  }
-
-  .countdown-label {
-    font-size: 0.65rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: #6688aa;
-    margin-bottom: 16px;
-    font-weight: 700;
-  }
-
-  .countdown-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 8px;
-  }
-
-  .countdown-unit {
-    background: rgba(0,0,0,0.4);
-    border: 1px solid rgba(59,130,246,0.15);
-    border-radius: 10px;
-    padding: 12px 4px 8px;
-  }
-
-  .countdown-val {
-    font-family: var(--mono);
-    font-size: 1.8rem;
-    font-weight: 700;
-    color: #fff;
-    line-height: 1;
-  }
-
-  .countdown-val.secs { color: var(--emerald); }
-
-  .countdown-lbl {
-    font-family: var(--mono);
-    font-size: 0.55rem;
-    color: #4a6a8a;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    margin-top: 4px;
-  }
-
-  .exam-date-note {
-    font-family: var(--mono);
-    font-size: 0.6rem;
-    color: #4a6a8a;
-    margin-top: 12px;
-  }
 
   /* ── Heatmap Calendar ── */
   .heatmap-nav {
@@ -486,7 +519,7 @@
     border-radius: 3px;
   }
 
-  /* ── Stats Row ── */
+  /* ── Stats Box Adjustments ── */
   .stats-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -519,7 +552,6 @@
 
   .stat-box-val.accent { color: var(--accent); }
   .stat-box-val.emerald { color: var(--emerald); }
-  .stat-box-val.amber { color: var(--amber); }
 
   .stat-box-sub {
     font-family: var(--mono);
@@ -529,8 +561,6 @@
   }
 
   /* ── Streak Card ── */
-  .streak-flame { font-size: 1.5rem; }
-
   .streak-bar-track {
     width: 100%;
     height: 3px;
@@ -554,7 +584,7 @@
     margin-top: 4px;
   }
 
-  /* ── Log Form ── */
+  /* ── Log Form Inputs ── */
   .form-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -599,7 +629,7 @@
   .btn-log:active { transform: scale(0.98); }
 
   /* ── Log Table ── */
-  .log-scroll { max-height: 160px; overflow-y: auto; margin-top: 12px; }
+  .log-scroll { max-height: 130px; overflow-y: auto; margin-top: 12px; }
 
   .log-scroll::-webkit-scrollbar { width: 4px; }
   .log-scroll::-webkit-scrollbar-track { background: transparent; }
@@ -644,7 +674,7 @@
 
   .del-btn:hover { color: #ef4444; }
 
-  /* ── Daily Goal ── */
+  /* ── Daily Goal Progress ── */
   .goal-row {
     display: flex;
     align-items: center;
@@ -655,7 +685,7 @@
   .goal-label { font-size: 0.65rem; color: var(--muted); white-space: nowrap; }
 
   .goal-track {
-    flex: 1;
+    width: 100%;
     height: 4px;
     background: var(--border);
     border-radius: 99px;
@@ -676,7 +706,7 @@
     white-space: nowrap;
   }
 
-  /* ── Quick note ── */
+  /* ── Motivational Note ── */
   .quote-card {
     background: linear-gradient(135deg, rgba(99,102,241,0.08), rgba(59,130,246,0.04));
     border: 1px solid rgba(99,102,241,0.2);
@@ -698,16 +728,15 @@
     display: block;
   }
 
-  /* ── Animations ── */
+  /* Animations */
   @keyframes fadeUp {
     from { opacity: 0; transform: translateY(12px); }
     to { opacity: 1; transform: translateY(0); }
   }
 
-  .card { animation: fadeUp 0.4s ease both; }
-  .right-col > * { animation: fadeUp 0.4s ease both; }
+  .card, .countdown-banner { animation: fadeUp 0.4s ease both; }
 
-  /* Toast */
+  /* Toast notification */
   #toast {
     position: fixed;
     bottom: 24px;
@@ -736,25 +765,12 @@
   <div class="header-badge">Master Tracker</div>
 </header>
 
-<main>
-  <!-- ═══════════════════════════ LEFT COLUMN ═══════════════════════════ -->
-  <div style="display:flex;flex-direction:column;gap:20px;">
-    <div class="card">
-      <div class="syllabus-header">
-        <div class="card-title" style="margin:0;"><span>✅</span> Official Syllabus Checklist</div>
-        <div class="progress-pct" id="pct">0%</div>
-      </div>
-      <div class="progress-track"><div class="progress-fill" id="prog-fill" style="width:0%"></div></div>
-
-      <div id="checklist-container"></div>
-    </div>
-  </div>
-
-  <!-- ═══════════════════════════ RIGHT COLUMN ══════════════════════════ -->
-  <div class="right-col">
-
-    <!-- Countdown -->
-    <div class="countdown-card">
+<main class="dashboard-container">
+  
+  <!-- ═══════════════════════════ TOP BANNER ROW ═══════════════════════════ -->
+  <div class="top-banner-row">
+    <!-- Countdown Banner Component -->
+    <div class="countdown-banner">
       <div class="countdown-label">Countdown to GATE 2026</div>
       <div class="countdown-grid">
         <div class="countdown-unit"><div class="countdown-val" id="cd-days">--</div><div class="countdown-lbl">Days</div></div>
@@ -764,108 +780,138 @@
       </div>
       <div class="exam-date-note">Target: 1 Feb 2026 · 09:30 IST</div>
     </div>
+  </div>
 
-    <!-- Stats Row -->
-    <div class="stats-row">
-      <div class="stat-box">
-        <div class="stat-box-label">Total Hours</div>
-        <div class="stat-box-val accent" id="stat-total">0</div>
-        <div class="stat-box-sub">invested</div>
-      </div>
-      <div class="stat-box">
-        <div class="stat-box-label">Today</div>
-        <div class="stat-box-val emerald" id="stat-today">0</div>
-        <div class="stat-box-sub">hrs logged</div>
-      </div>
-    </div>
+  <!-- ═══════════════════════════ DUAL SPLIT INTERFACE ═══════════════════════════ -->
+  <div class="main-split-layout">
+    
+    <!-- LEFT WORKSPACE: High Priority Forms & Syllabus Checklists -->
+    <div style="display:flex;flex-direction:column;gap:24px;">
+      
+      <!-- SUB BANNER SPLIT ROW: Daily Study Log & Daily Goal Tracker Side-by-Side -->
+      <div class="execution-row">
+        
+        <!-- Log Study Card -->
+        <div class="card" style="padding:18px;">
+          <div class="card-title" style="margin-bottom:12px;"><span>📝</span> Log Study Session</div>
+          <div class="form-row">
+            <input type="date" id="study-date" class="inp">
+            <input type="number" id="study-hours" class="inp" step="0.5" min="0.5" max="24" placeholder="hrs (e.g. 3.5)">
+          </div>
+          <button class="btn-log" id="log-btn">Log Session</button>
 
-    <!-- Streak Card -->
-    <div class="card" style="padding:18px;">
-      <div class="card-title" style="margin-bottom:10px;"><span>🔥</span> Streak Tracker</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-        <div>
-          <div style="font-size:0.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px;">Current</div>
-          <div style="font-family:var(--mono);font-size:1.6rem;font-weight:700;color:var(--amber);" id="streak-current">0 <span style="font-size:.7rem;">days</span></div>
+          <div class="log-scroll">
+            <table>
+              <thead><tr><th>Date</th><th>Delete</th><th style="text-align:right;">Hours</th></tr></thead>
+              <tbody id="log-body"></tbody>
+            </table>
+          </div>
         </div>
-        <div>
-          <div style="font-size:0.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px;">Best</div>
-          <div style="font-family:var(--mono);font-size:1.6rem;font-weight:700;color:#ff6b35;" id="streak-best">0 <span style="font-size:.7rem;">days</span></div>
+
+        <!-- Daily Goal Tracker Card -->
+        <div class="card" style="padding:18px; display: flex; flex-direction: column; justify-content: space-between;">
+          <div>
+            <div class="card-title"><span>🎯</span> Daily Goal Monitor</div>
+            <div class="goal-row" style="margin-bottom: 16px;">
+              <div class="goal-label">Today's target:</div>
+              <div style="display:flex;align-items:center;gap:6px;margin-left:auto;">
+                <input type="number" id="daily-goal" class="inp" style="width:60px;padding:4px 8px;text-align:center;" min="1" max="24" value="8">
+                <span style="font-family:var(--mono);font-size:0.65rem;color:var(--muted);">hrs</span>
+              </div>
+            </div>
+            
+            <div class="goal-track" style="height: 6px; margin-bottom: 10px;"><div class="goal-fill" id="goal-fill" style="width:0%"></div></div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:20px;">
+              <div class="goal-val" id="goal-done-lbl" style="font-weight: 700; color: var(--text);">0 hrs done</div>
+              <div class="goal-val" id="goal-target-lbl">of 8 hrs</div>
+            </div>
+          </div>
+
+          <!-- Quick Metrics inside Goal box for balance -->
+          <div class="stats-row">
+            <div class="stat-box" style="padding: 10px 14px;">
+              <div class="stat-box-label">Total Hours</div>
+              <div class="stat-box-val accent" id="stat-total">0</div>
+            </div>
+            <div class="stat-box" style="padding: 10px 14px;">
+              <div class="stat-box-label">Today Total</div>
+              <div class="stat-box-val emerald" id="stat-today">0</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Syllabus Progress Card -->
+      <div class="card">
+        <div class="syllabus-header">
+          <div class="card-title" style="margin:0;"><span>✅</span> Official Syllabus Content Checklist</div>
+          <div class="progress-pct" id="pct">0%</div>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="prog-fill" style="width:0%"></div></div>
+
+        <div id="checklist-container"></div>
+      </div>
+
+    </div>
+
+    <!-- RIGHT WORKSPACE: Supplemental Retention & Habit Trackers -->
+    <div class="right-col">
+
+      <!-- Streak Retention Card -->
+      <div class="card" style="padding:18px;">
+        <div class="card-title" style="margin-bottom:10px;"><span>🔥</span> Streak Tracker</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+          <div>
+            <div style="font-size:0.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px;">Current</div>
+            <div style="font-family:var(--mono);font-size:1.6rem;font-weight:700;color:var(--amber);" id="streak-current">0 <span style="font-size:.7rem;">days</span></div>
+          </div>
+          <div>
+            <div style="font-size:0.6rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px;">Best</div>
+            <div style="font-family:var(--mono);font-size:1.6rem;font-weight:700;color:#ff6b35;" id="streak-best">0 <span style="font-size:.7rem;">days</span></div>
+          </div>
+        </div>
+        <div class="streak-bar-track"><div class="streak-bar-fill" id="streak-bar" style="width:0%"></div></div>
+        <div class="streak-sub" id="streak-sub">Log today to keep your streak alive!</div>
+      </div>
+
+      <!-- Heatmap Calendar Card -->
+      <div class="card" style="padding:18px;">
+        <div class="card-title"><span>📅</span> Study Heatmap</div>
+
+        <div class="heatmap-nav">
+          <button class="nav-btn" id="prev-month">‹</button>
+          <div class="heatmap-month" id="cal-month-label">May 2025</div>
+          <button class="nav-btn" id="next-month">›</button>
+        </div>
+
+        <div class="heatmap-days-header">
+          <div class="day-name">Su</div><div class="day-name">Mo</div><div class="day-name">Tu</div>
+          <div class="day-name">We</div><div class="day-name">Th</div><div class="day-name">Fr</div><div class="day-name">Sa</div>
+        </div>
+
+        <div class="heatmap-grid" id="cal-grid"></div>
+
+        <div class="heatmap-legend">
+          <div class="legend-label">Less</div>
+          <div class="legend-box" style="background:#161f2e;border:1px solid #1e2d45;"></div>
+          <div class="legend-box heat-1"></div>
+          <div class="legend-box heat-2"></div>
+          <div class="legend-box heat-3"></div>
+          <div class="legend-box heat-4"></div>
+          <div class="legend-box heat-5"></div>
+          <div class="legend-label">More</div>
         </div>
       </div>
-      <div class="streak-bar-track"><div class="streak-bar-fill" id="streak-bar" style="width:0%"></div></div>
-      <div class="streak-sub" id="streak-sub">Log today to keep your streak alive!</div>
-    </div>
 
-    <!-- Heatmap Calendar -->
-    <div class="card" style="padding:18px;">
-      <div class="card-title"><span>📅</span> Study Heatmap</div>
-
-      <div class="heatmap-nav">
-        <button class="nav-btn" id="prev-month">‹</button>
-        <div class="heatmap-month" id="cal-month-label">May 2025</div>
-        <button class="nav-btn" id="next-month">›</button>
+      <!-- Motivational quote block -->
+      <div class="quote-card">
+        "Preparation is not about talent. It is about consistency, discipline, and the courage to show up every single day."
+        <span class="quote-attr">— Keep grinding 🎓</span>
       </div>
 
-      <div class="heatmap-days-header">
-        <div class="day-name">Su</div><div class="day-name">Mo</div><div class="day-name">Tu</div>
-        <div class="day-name">We</div><div class="day-name">Th</div><div class="day-name">Fr</div><div class="day-name">Sa</div>
-      </div>
-
-      <div class="heatmap-grid" id="cal-grid"></div>
-
-      <div class="heatmap-legend">
-        <div class="legend-label">Less</div>
-        <div class="legend-box" style="background:#161f2e;border:1px solid #1e2d45;"></div>
-        <div class="legend-box heat-1"></div>
-        <div class="legend-box heat-2"></div>
-        <div class="legend-box heat-3"></div>
-        <div class="legend-box heat-4"></div>
-        <div class="legend-box heat-5"></div>
-        <div class="legend-label">More</div>
-      </div>
-    </div>
-
-    <!-- Daily Goal Progress -->
-    <div class="card" style="padding:18px;">
-      <div class="card-title"><span>🎯</span> Daily Goal</div>
-      <div class="goal-row">
-        <div class="goal-label">Today's target:</div>
-        <div style="display:flex;align-items:center;gap:6px;margin-left:auto;">
-          <input type="number" id="daily-goal" class="inp" style="width:60px;padding:4px 8px;text-align:center;" min="1" max="24" value="8">
-          <span style="font-family:var(--mono);font-size:0.65rem;color:var(--muted);">hrs</span>
-        </div>
-      </div>
-      <div class="goal-track"><div class="goal-fill" id="goal-fill" style="width:0%"></div></div>
-      <div style="display:flex;justify-content:space-between;margin-top:5px;">
-        <div class="goal-val" id="goal-done-lbl">0 hrs done</div>
-        <div class="goal-val" id="goal-target-lbl">of 8 hrs</div>
-      </div>
-    </div>
-
-    <!-- Log Study -->
-    <div class="card" style="padding:18px;">
-      <div class="card-title"><span>📝</span> Log Study Session</div>
-      <div class="form-row">
-        <input type="date" id="study-date" class="inp">
-        <input type="number" id="study-hours" class="inp" step="0.5" min="0.5" max="24" placeholder="hrs (e.g. 3.5)">
-      </div>
-      <button class="btn-log" id="log-btn">Log Session</button>
-
-      <div class="log-scroll">
-        <table>
-          <thead><tr><th>Date</th><th>Note</th><th style="text-align:right;">Hours</th></tr></thead>
-          <tbody id="log-body"></tbody>
-        </table>
-      </div>
-    </div>
-
-    <!-- Motivational quote -->
-    <div class="quote-card">
-      "Preparation is not about talent. It is about consistency, discipline, and the courage to show up every single day."
-      <span class="quote-attr">— Keep grinding 🎓</span>
-    </div>
-
-  </div><!-- end right col -->
+    </div><!-- end right col -->
+  </div>
 </main>
 
 <div id="toast">✓ Session logged!</div>
@@ -1023,13 +1069,13 @@ const SYLLABUS = [
   }
 ];
 
-// ═══════════════════════ STATE ═══════════════════════
+// ═══════════════════════ STATE MANAGEMENT ═══════════════════════
 let checkedItems = JSON.parse(localStorage.getItem('gate2026_checked') || '[]');
 let studyLogs = JSON.parse(localStorage.getItem('gate2026_logs') || '[]');
 let dailyGoal = parseInt(localStorage.getItem('gate2026_goal') || '8');
 let calViewDate = new Date();
 
-// ═══════════════════════ BUILD CHECKLIST ═══════════════════════
+// ═══════════════════════ BUILD INTERACTIVE CHECKLIST ═══════════════════════
 function buildChecklist() {
   const container = document.getElementById('checklist-container');
   container.innerHTML = '';
@@ -1067,12 +1113,12 @@ function buildChecklist() {
 
     container.appendChild(block);
 
-    // Accordion toggle
+    // Accordion interaction
     block.querySelector('.section-header').addEventListener('click', () => {
       block.classList.toggle('open');
     });
 
-    // Checkbox changes
+    // Checkbox state processing
     block.querySelectorAll('input[type="checkbox"]').forEach(cb => {
       cb.addEventListener('change', () => {
         const id = cb.dataset.id;
@@ -1086,7 +1132,8 @@ function buildChecklist() {
         }
         localStorage.setItem('gate2026_checked', JSON.stringify(checkedItems));
         updateProgress();
-        // Update section mini progress
+        
+        // Dynamic re-render of node specific mini-progress strings
         const sec = SYLLABUS.find(s => s.topics.some(t => t.id === id));
         if (sec) {
           const cnt = sec.topics.filter(t => checkedItems.includes(t.id)).length;
@@ -1105,7 +1152,7 @@ function updateProgress() {
   document.getElementById('prog-fill').style.width = pct + '%';
 }
 
-// ═══════════════════════ COUNTDOWN ═══════════════════════
+// ═══════════════════════ CLOCK COUNTDOWN BANNER ═══════════════════════
 const GATE_DATE = new Date('2026-02-01T09:30:00+05:30').getTime();
 
 function tick() {
@@ -1127,7 +1174,7 @@ function tick() {
 setInterval(tick, 1000);
 tick();
 
-// ═══════════════════════ HEATMAP ═══════════════════════
+// ═══════════════════════ CALENDAR HEATMAP ═══════════════════════
 function dateKey(d) {
   return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
 }
@@ -1163,7 +1210,7 @@ function renderCalendar() {
   const grid = document.getElementById('cal-grid');
   grid.innerHTML = '';
 
-  // Empty cells
+  // Appending structural offsets for calendar tracking alignment
   for (let i = 0; i < firstDay; i++) {
     const el = document.createElement('div');
     el.className = 'cal-day empty';
@@ -1182,7 +1229,6 @@ function renderCalendar() {
       <div class="cal-tooltip">${hrs > 0 ? hrs + ' hrs' : 'No study'}</div>
     `;
 
-    // Click to quick-log
     el.addEventListener('click', () => {
       const dateInput = document.getElementById('study-date');
       dateInput.value = key;
@@ -1203,7 +1249,7 @@ document.getElementById('next-month').addEventListener('click', () => {
   renderCalendar();
 });
 
-// ═══════════════════════ STREAK ═══════════════════════
+// ═══════════════════════ STREAK CONVERSIONS ═══════════════════════
 function calcStreaks() {
   const hoursMap = buildHoursMap();
   const today = new Date();
@@ -1211,17 +1257,13 @@ function calcStreaks() {
 
   let current = 0;
   let best = 0;
-  let streak = 0;
-  let tempBest = 0;
 
-  // Build sorted unique dates
   const allDates = Object.keys(hoursMap)
     .filter(k => hoursMap[k] > 0)
     .sort();
 
   if (allDates.length === 0) return { current: 0, best: 0 };
 
-  // Calculate best streak from sorted dates
   let runLen = 1;
   for (let i = 1; i < allDates.length; i++) {
     const prev = new Date(allDates[i-1]);
@@ -1236,11 +1278,9 @@ function calcStreaks() {
   }
   best = Math.max(best, runLen);
 
-  // Calculate current streak (counting backwards from today or yesterday)
   let checkDate = new Date(today);
   const todayKey = dateKey(checkDate);
   if (!hoursMap[todayKey]) {
-    // Check if yesterday was studied
     checkDate.setDate(checkDate.getDate() - 1);
   }
   current = 0;
@@ -1273,7 +1313,7 @@ function updateStreaks() {
   }
 }
 
-// ═══════════════════════ STATS ═══════════════════════
+// ═══════════════════════ LOG METRIC COMPUTATION ═══════════════════════
 function updateStats() {
   const hoursMap = buildHoursMap();
   const total = Object.values(hoursMap).reduce((a,b) => a+b, 0);
@@ -1283,7 +1323,6 @@ function updateStats() {
   document.getElementById('stat-total').textContent = total % 1 === 0 ? total : total.toFixed(1);
   document.getElementById('stat-today').textContent = todayHrs % 1 === 0 ? todayHrs : todayHrs.toFixed(1);
 
-  // Daily goal
   const goal = parseInt(document.getElementById('daily-goal').value) || 8;
   const pct = Math.min(100, Math.round((todayHrs / goal) * 100));
   document.getElementById('goal-fill').style.width = pct + '%';
@@ -1291,12 +1330,12 @@ function updateStats() {
   document.getElementById('goal-target-lbl').textContent = 'of ' + goal + ' hrs';
 }
 
-// ═══════════════════════ LOG TABLE ═══════════════════════
+// ═══════════════════════ LOG RENDER TABLE ═══════════════════════
 function renderLogTable() {
   const body = document.getElementById('log-body');
   body.innerHTML = '';
   const sorted = [...studyLogs].sort((a,b) => b.date.localeCompare(a.date));
-  sorted.slice(0, 20).forEach((log, idx) => {
+  sorted.slice(0, 20).forEach((log) => {
     const d = new Date(log.date + 'T00:00:00');
     const tr = document.createElement('tr');
     tr.innerHTML = `
@@ -1321,7 +1360,7 @@ function renderLogTable() {
   });
 }
 
-// ═══════════════════════ LOG FORM ═══════════════════════
+// ═══════════════════════ INPUT FORM TRRIGERS ═══════════════════════
 document.getElementById('log-btn').addEventListener('click', () => {
   const date = document.getElementById('study-date').value;
   const hours = parseFloat(document.getElementById('study-hours').value);
@@ -1334,13 +1373,12 @@ document.getElementById('log-btn').addEventListener('click', () => {
   showToast('✓ ' + hours + ' hrs logged for ' + date);
 });
 
-// ═══════════════════════ DAILY GOAL ═══════════════════════
 document.getElementById('daily-goal').addEventListener('change', (e) => {
   localStorage.setItem('gate2026_goal', e.target.value);
   updateStats();
 });
 
-// ═══════════════════════ TOAST ═══════════════════════
+// Toast interaction engine
 function showToast(msg) {
   const t = document.getElementById('toast');
   t.textContent = msg;
@@ -1348,7 +1386,7 @@ function showToast(msg) {
   setTimeout(() => t.classList.remove('show'), 2500);
 }
 
-// ═══════════════════════ REFRESH ALL ═══════════════════════
+// Global dashboard re-sync interface
 function refreshAll() {
   renderCalendar();
   renderLogTable();
@@ -1356,7 +1394,7 @@ function refreshAll() {
   updateStreaks();
 }
 
-// ═══════════════════════ INIT ═══════════════════════
+// Bootstrap Initialization
 document.getElementById('study-date').valueAsDate = new Date();
 document.getElementById('daily-goal').value = dailyGoal;
 
